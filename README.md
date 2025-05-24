@@ -1,11 +1,11 @@
 # -HORRIFIED-GAME-
 
 advanced c++ project
-this project is a board game in the name of <<HORRIFIED>> 
+this project is a board game in the name of **HORRIFIED** 
 in this project we used:
 
-1.object oriented progrmming(oop in c++)
-2.exception handling**
+1.object oriented progrmming(oop in c++).
+2.exception handling.
 3.information hiding(separate interface from the implementation)
 and etc.
 
