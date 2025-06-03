@@ -23,6 +23,9 @@ private:
 
 public:
 
+void show_near_place();
+~place();    
+// add other methods
 
 
 };
