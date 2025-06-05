@@ -19,13 +19,14 @@ struct card
 };
 struct item_info
 { //****** change
+    
     std::string color;
     std::string name;
     coordinate location;
     int count;
+    int power;
 };
 //*******************************************************************************************************************//
-void constract_perk_cart(std::vector<card> c); // for read perk card from file
 // after read we most construct object
 class perk_card
 {
@@ -38,12 +39,21 @@ public:
     virtual void play_perk(Hero *) = 0;
     virtual void play_perk(Monster *, Monster *) = 0;
     virtual void play_perk(Monster *) = 0;
-    virtual void play_perk(std::multimap<std::string, place> &places) = 0;
+    virtual void play_perk(std::map<std::string, place> &places) = 0;
     void set_count(int);
     int &get_count();
     virtual ~perk_card();
 };
+//=======================================================        ===========================================
+class bag_perks{
+    public:
+    static perk_card* get_one_perk_card();
+    void constract_perk_cart(std::vector<card> c); // for read perk card from file
+    private:
+    static std::vector<perk_card*> Perk_cards;
 
+};
+//=========================================          ==================================================
 class visit_from_the_detective : public perk_card
 {
 
@@ -55,6 +65,7 @@ public:
     }
     void play_perk(Monster *) override;
 };
+//=============================================           ================================================
 class break_of_dawn : public perk_card
 {
 public:
@@ -63,9 +74,9 @@ public:
         this->count = count;
         name = "break_of_dawn";
     }
-    void play_perk(std::multimap<std::string, place> &places) override;
+    void play_perk(std::map<std::string, place> &places) override;
 };
-
+//============================================          ================================================
 class overstock : public perk_card
 {
 
@@ -75,9 +86,9 @@ public:
         this->count = count;
         name = "overstock";
     }
-    void play_perk(std::multimap<std::string, place> &places) override;
+    void play_perk(std::map<std::string, place> &places) override;
 };
-
+//===============================================                ============================================
 class late_into_the_night : public perk_card
 {
 
@@ -88,7 +99,7 @@ class late_into_the_night : public perk_card
     }
     void play_perk(Hero *) override;
 };
-
+//=======================================            =================================================
 class repel : public perk_card
 {
     repel(int const)
@@ -98,7 +109,7 @@ class repel : public perk_card
     }
     void play_perk(Monster *, Monster *) override;
 };
-
+//==========================================          ===========================================
 class hurry : public perk_card
 {
 
@@ -109,20 +120,30 @@ class hurry : public perk_card
     }
     void play_perk(Hero *, Hero *) override;
 };
+//========================================               ===============================================
+class bag_items{
+    friend class item;
+    private:
+    static std::vector<item_info> items_in_the_game;
+    static std::vector<item_info> items_out_the_game;
+    public:
+    bag_items(item_info);//باید از فایل بخوانی و شی درست کنیم
+    static void put_Itme_IN_Place(std::map<std::string, place> &places, int a);
+};
+//============================================               ===========================================
 class item
 {
 private:
-    static std::vector<item_info> items_in_the_game;
-    static std::vector<item_info> items_out_the_game;
+
+    std::string color;
+    int power;
 
 public:
-    item(const item_info &info)
-    {
-        items_in_the_game.push_back(info); // ذخیره `item_info` در وکتور
-    }
-    void Read_From_File();
-    static void put_Itme_IN_Place(std::multimap<std::string, place> &places, int a);
-    // add related methods
+    
+    item(int , std::string);
+
+    std::string get_coler()const;
+    int get_power()const;
 };
 
 //********************************************************************************************************************//
