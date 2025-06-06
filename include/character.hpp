@@ -24,22 +24,23 @@ struct monster_card_info{
 class Monster{
 protected:
     std::string wher_is_monster;
-
+    std::string m_name;
 public:
     std::string get_place();
     virtual ~Monster();
-    std::string name;
+    
     void set_location(std::string); // اسم مکانی که او قرار دارد ست میشود
     // پیاده سازی کلاس
 };
 
 //========================================================================================================================//
 class Deracola : public Monster{
-
+    Deracola();
 };
 
 //========================================================================================================================//
 class Invisable_man : public Monster{
+    Invisable_man();
     // همان متود های مانستر و بقیه
 };
 
