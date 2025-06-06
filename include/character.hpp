@@ -1,26 +1,27 @@
 #ifndef CHARACTER - HPP
 #define CHARACTER -HPP
-
+//========================================================================================================================//
 #include <iostream>
 #include <vector>
 #include <string>
 #include <map>
 #include "place.hpp"
-
+//========================================================================================================================//
 enum actions {Move , Guide , Pickup , Advance , Defeat , Special_Action};
+//========================================================================================================================//
 enum Place {precinct , mansion , inn , camp , theatre , cave , institute , crypt , barn , dungeon , docks , tower , laboratory , graveyard , hospital};
-struct monster_card_info
-{
+
+//========================================================================================================================//
+struct monster_card_info{
     int items_push_in_game;
     std::string monster_card_event;
     std::string strike;
     std::string strike_arrangment;
 };
 
-//***********************************************************************************************************************//
+//========================================================================================================================//
 
-class Monster
-{
+class Monster{
 protected:
     std::string wher_is_monster;
 
@@ -31,18 +32,19 @@ public:
     void set_location(std::string); // اسم مکانی که او قرار دارد ست میشود
     // پیاده سازی کلاس
 };
-class Deracola : public Monster
-{
+
+//========================================================================================================================//
+class Deracola : public Monster{
 
 };
 
-class Invisable_man : public Monster
-{
+//========================================================================================================================//
+class Invisable_man : public Monster{
     // همان متود های مانستر و بقیه
 };
 
-class Hero
-{
+//========================================================================================================================//
+class Hero{
     friend void do_perk(Hero*);
 public:
     std::string name;
@@ -66,22 +68,26 @@ protected:
     int action;
 };
 
-class Archaeologist : public Hero
-{
+//========================================================================================================================//
+
+class Archaeologist : public Hero{
 public:
     using Hero::Hero;
     Archaeologist(std::string);
     int do_action() override;
     void set_action() override;
 };
-class Mayor : public Hero
-{
+
+//========================================================================================================================//
+class Mayor : public Hero{
 public:
     using Hero::Hero;
     int do_action() override;
     Mayor(place);
     void set_action() override;
 };
+
+//========================================================================================================================//
 class Villager{
     public:
     Villager(std::string , std::string);
@@ -92,5 +98,7 @@ class Villager{
     std::string name_of_place;
     std::string safe_place;
 };
+
+//========================================================================================================================//
 
 #endif
