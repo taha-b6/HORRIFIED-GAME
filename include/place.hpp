@@ -48,8 +48,6 @@ public:
     int get_monster_in_place();
     void kill_monster(int);
     std::vector<place>get_p();
-
     ~place();
-    // add other methods
 };
 #endif

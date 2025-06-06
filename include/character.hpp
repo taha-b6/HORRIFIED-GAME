@@ -21,7 +21,7 @@ struct monster_card_info
 
 class Monster
 {
-private:
+protected:
     std::string wher_is_monster;
 
 public:
@@ -43,6 +43,7 @@ class Invisable_man : public Monster
 
 class Hero
 {
+    friend void do_perk(Hero*);
 public:
     std::string name;
 
@@ -77,6 +78,7 @@ class Mayor : public Hero
 {
 public:
     using Hero::Hero;
+    int do_action() override;
     Mayor(place);
     void set_action() override;
 };

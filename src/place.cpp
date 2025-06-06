@@ -17,8 +17,8 @@ place::place(string n):name(n){
 }
 
 
-place::~place() {}
-//=========================================    ===================================================================
+place::~place(){}
+//=========================================        ===================================================================
 
 void place::put_in_place(Monster *m)
 {
@@ -136,7 +136,7 @@ void place::put_villager_in_place(Hero* h , place& p , std::string place_name ="
     vector <item> temp;
     for(int i =0 ; i<a ; ++i){
         temp.push_back(items_list.back());
-        items_list.pop_back();   
+        items_list.pop_back();//باید برود در وکتور خارج از بازی   
     }
     return temp;
  }
@@ -184,7 +184,6 @@ void place::put_villager_in_place(Hero* h , place& p , std::string place_name ="
             }
         }
     }
-
     if (!found) {
         std::cout << "Monster not found in place.\n";
     }
@@ -193,4 +192,3 @@ void place::put_villager_in_place(Hero* h , place& p , std::string place_name ="
 std::vector<place> place::get_p(){
     return near_place;
 }
-

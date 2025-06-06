@@ -8,16 +8,33 @@
 
 using namespace std;
 
-perk_card* bag_perks::get_one_perk_card(){
-    perk_card* p = Perk_cards.back();
-    Perk_cards.pop_back();
-    return p;
-}
-void constract_perk_cart(std::vector<card> c);//باید با newکردن کارت درست کنی
-
-void bag_items::put_Itme_IN_Place(std::map<std::string, place> &places, int a)
+perk_card* bag_perks::get_one_perk_card()
 {
-    while(a>0)
+    if (Perk_cards.empty())
+        return nullptr;
+
+    perk_card* original = Perk_cards.back();
+
+    int count = original->get_count() - 1;
+    original->set_count(count);
+
+    if (count == 0)
+    {
+        Perk_cards.pop_back();
+        delete original;
+    }
+
+    perk_card* copy = original->clone();
+    copy->set_count(1);
+
+    return copy;
+}
+
+void bag_perks::constract_perk_cart(std::vector<card> c){} // باید با newکردن کارت درست کنی
+
+void bag_items::put_Itme_IN_Place(int a)
+{
+    while (a > 0)
     {
         if (items_in_the_game.empty())
         {
@@ -26,48 +43,46 @@ void bag_items::put_Itme_IN_Place(std::map<std::string, place> &places, int a)
 
             std::string n = items_out_the_game.back().name;
 
-            auto it = places.find(n);
-            if (it != places.end())
-            {
-                item newItem(items_out_the_game.back().power ,items_out_the_game.back().color);
-                it->second.items_list.push_back(newItem);
-                a-=1;
-                items_out_the_game.back().count-=1;
+            auto it = moving::get_place(n);
 
-                if (items_out_the_game.back().count == 0)
-                {
-                    items_in_the_game.push_back(items_out_the_game.back());
-                    items_out_the_game.pop_back();
-                }
+            item newItem(items_out_the_game.back().power, items_out_the_game.back().color);
+            it.items_list.push_back(newItem);
+            a -= 1;
+            items_out_the_game.back().count -= 1;
+
+            if (items_out_the_game.back().count == 0)
+            {
+                items_in_the_game.push_back(items_out_the_game.back());
+                items_out_the_game.pop_back();
             }
         }
-        else 
+        else
         {
             std::string n = items_in_the_game.back().name;
 
-            auto it = places.find(n);
-            if (it != places.end())
-            {
-                item newItem(items_in_the_game.back().power , items_in_the_game.back().color);
-                it->second.items_list.push_back(newItem);
-                a-=1;
-                items_in_the_game.back().count-=1;
+            auto it = moving::get_place(n);
 
-                if (items_in_the_game.back().count == 0)
-                {
-                    items_out_the_game.push_back(items_in_the_game.back());
-                    items_in_the_game.pop_back();
-                }
+            item newItem(items_in_the_game.back().power, items_in_the_game.back().color);
+            it.items_list.push_back(newItem);
+            a -= 1;
+            items_in_the_game.back().count -= 1;
+
+            if (items_in_the_game.back().count == 0)
+            {
+                items_out_the_game.push_back(items_in_the_game.back());
+                items_in_the_game.pop_back();
             }
         }
     }
 }
 //***************************************************************************//
-string item:: get_coler()const{
+string item::get_coler() const
+{
     return color;
 }
 //************** *********************************************//
-int item::get_power()const{
+int item::get_power() const
+{
     return power;
 }
 //***********************************************************************************************//
@@ -100,15 +115,15 @@ void repel::play_perk(Monster *deracola, Monster *inviseble_man)
 { // برای حرکت دادن هیولا ها دو خانه
     moving::set_new_location();
 }
-void break_of_dawn::play_perk(map<string, place> &places)
+void break_of_dawn::play_perk()
 {
-    bag_items::put_Itme_IN_Place(places, 2);
+    bag_items::put_Itme_IN_Place(2);
 }
 //***************************************************************************************//
 
-void overstock::play_perk(map<string, place> &places)
+void overstock::play_perk()
 {
-    bag_items::put_Itme_IN_Place(places, 2);
+    bag_items::put_Itme_IN_Place(2);
 }
 
 //********************************************************************************//
@@ -120,7 +135,7 @@ void late_into_the_night::play_perk(Hero *hero)
 //********************************************************************//
 void hurry::play_perk(Hero *archaeologist, Hero *mayor)
 {
-    //برای حرکت دادن هر دو قهرمان دو حانه
+    // برای حرکت دادن هر دو قهرمان دو حانه
     moving::set_new_location(1);
 }
 //*********************************************************** //
