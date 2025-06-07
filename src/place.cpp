@@ -116,7 +116,9 @@ void place::put_villager_in_place(Hero* h , place& p , std::string place_name ="
     //وقتی استفاده میشود که action guid باشد
     if(place_name!=""){
         //گذاشتن محلی در خانه قهرمان
-        p.villager_in_place.push_back(near_place.back().villager_in_place.back());
+        Villager& v= near_place.back().villager_in_place.back();
+        p.villager_in_place.push_back(v);
+        v.set_place(p.name);
         near_place.back().villager_in_place.pop_back();
         if(p.villager_in_place.back().is_safe_place()){
             h->increase_perk_card(bag_perks::get_one_perk_card());
@@ -124,16 +126,32 @@ void place::put_villager_in_place(Hero* h , place& p , std::string place_name ="
     }
     if(place_name==""){
         //گذاشتن محلی در خانه قهرمان در مکان های همسایه
-        p.near_place.back().villager_in_place.push_back(p.villager_in_place.back());
-        p.villager_in_place.pop_back();
-        if(p.near_place.back().villager_in_place.back().is_safe_place()){
-            h->increase_perk_card(bag_perks::get_one_perk_card());
+        Villager & v =p.villager_in_place.back();
+        for(auto & pl:p.near_place){
+            if(pl.name==v.name_of_safe_place()){
+                pl.villager_in_place.push_back(v);
+                v.set_place(pl.name);
+                h->increase_perk_card(bag_perks::get_one_perk_card());
+                return;
+            }
+            cout<<"please enter name of place which do you like villager go to it\n";
+            string n;
+            cin>>n;
+            place& plac= moving::get_place(n);
+            plac.villager_in_place.push_back(v);
+            v.set_place(plac.name);
+
+        if(plac.villager_in_place.back().is_safe_place()){
+            h->increase_perk_card(bag_perks::get_one_perk_card());}
         }
     }
 }
 //*************************************************************************//
  vector<item> place::get_items(int a){
     vector <item> temp;
+    if(a>items_list.size()){
+        throw invalid_argument("here dont have enogh item");
+    }
     for(int i =0 ; i<a ; ++i){
         temp.push_back(items_list.back());
         items_list.pop_back();//باید برود در وکتور خارج از بازی   

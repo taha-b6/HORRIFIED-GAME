@@ -22,6 +22,7 @@ public:
     static void set_new_location(int = 0); // برای حرکت دادن هیولا ها دو خانه و اگر ورودی داشت حرکت قهرمان ها
     static void set_new_location(Hero *, std::string);
     static void set_new_location(std::string); // برای حرکت دادن مرد نامرئی
+    static void set_new_location(Monster* , int );
     static void set_new_lacation_for_villager(Hero *, std::string, std::string = "");
     static place &get_place(std::string);
     static bool each_tabot_distroy();

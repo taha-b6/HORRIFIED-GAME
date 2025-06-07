@@ -347,17 +347,24 @@ int Hero::do_action()
             cin >> a;
             if (a >= 0)
             {
-                temp = p.get_items(a);
-                for (const auto &i : temp)
+                try
                 {
-                    if (wher_is_hero == "inn" || wher_is_hero == "mansiom" || wher_is_hero == "barn" || wher_is_hero == "laboratory" || wher_is_hero == "institute")
+                    temp = p.get_items(a);
+                    for (const auto &i : temp)
                     {
-                        items_for_distroy_invisble_man.push_back(i);
+                        if (wher_is_hero == "inn" || wher_is_hero == "mansiom" || wher_is_hero == "barn" || wher_is_hero == "laboratory" || wher_is_hero == "institute")
+                        {
+                            items_for_distroy_invisble_man.push_back(i);
+                        }
+                        else
+                        {
+                            items.push_back(i);
+                        }
                     }
-                    else
-                    {
-                        items.push_back(i);
-                    }
+                }
+                catch (invalid_argument &e)
+                {
+                    cout << e.what() << endl;
                 }
             }
             else
@@ -496,17 +503,24 @@ int Archaeologist::do_action()
         cin >> a;
         if (a >= 0)
         {
-            temp = pl.get_items(a);
-            for (const auto &i : temp)
+            try
             {
-                if (wher_is_hero == "inn" || wher_is_hero == "mansiom" || wher_is_hero == "barn" || wher_is_hero == "laboratory" || wher_is_hero == "institute")
+                temp = pl.get_items(a);
+                for (const auto &i : temp)
                 {
-                    items_for_distroy_invisble_man.push_back(i);
+                    if (wher_is_hero == "inn" || wher_is_hero == "mansiom" || wher_is_hero == "barn" || wher_is_hero == "laboratory" || wher_is_hero == "institute")
+                    {
+                        items_for_distroy_invisble_man.push_back(i);
+                    }
+                    else
+                    {
+                        items.push_back(i);
+                    }
                 }
-                else
-                {
-                    items.push_back(i);
-                }
+            }
+            catch (invalid_argument &e)
+            {
+                cout << e.what() << endl;
             }
         }
         else
@@ -565,4 +579,8 @@ bool Villager::is_safe_place()
     {
         return false;
     }
+}
+string Villager::name_of_safe_place()
+{
+    return name_of_place;
 }

@@ -120,6 +120,14 @@ place & moving::get_near_place(std::string n){
     cin>>pla;
     return places[pla];
 }
+//**********************************************************************//
+ void moving::set_new_location(Monster* m, int a ){
+    //code
+    if(m==deracola){
+        deracola.set
+    }
+ }
+
 
 
 

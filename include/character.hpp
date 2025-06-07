@@ -87,6 +87,7 @@ class Villager{
     Villager(std::string , std::string);
     void set_place(std::string);
     bool is_safe_place();
+    std::string name_of_safe_place();
     std::string name;
     private:
     std::string name_of_place;
