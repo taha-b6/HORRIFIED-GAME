@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include "place.hpp"
+#include "monster_card.hpp"
 //========================================================================================================================//
 enum actions {Move , Guide , Pickup , Advance , Defeat , Special_Action};
 //========================================================================================================================//
@@ -22,10 +23,12 @@ struct monster_card_info{
 //========================================================================================================================//
 
 class Monster{
+
 protected:
     std::string wher_is_monster;
     std::string m_name;
 public:
+
     std::string get_place();
     virtual ~Monster();
     
@@ -35,13 +38,50 @@ public:
 
 //========================================================================================================================//
 class Deracola : public Monster{
+friend class monster_Card;
+friend class form_of_the_bat ;
+friend class sunrise;
+friend class thief ;
+friend class the_delivery;
+friend class fortune_teller;
+friend class former_employer;
+friend class hurried_assistant;
+friend class the_inocent;
+friend class egyptian_expert ;
+friend class the_Ichthyologist;
+private:
+     
+    
+public:
+    static bool deracula_strike();
+    static void deracula_special_power();
+    void set_location(std::string place); 
     Deracola();
+    virtual ~Deracola();
 };
 
 //========================================================================================================================//
 class Invisable_man : public Monster{
+friend class monster_Card;
+friend class form_of_the_bat ;
+friend class sunrise;
+friend class thief ;
+friend class the_delivery;
+friend class fortune_teller;
+friend class former_employer;
+friend class hurried_assistant;
+friend class the_inocent;
+friend class egyptian_expert ;
+friend class the_Ichthyologist;
+private:
+
+
+public:
+    static bool invisible_man_strike();
+    static void invisible_man_special_power();
+    void set_location(std::string place); 
     Invisable_man();
-    // همان متود های مانستر و بقیه
+    virtual ~Invisable_man();
 };
 
 //========================================================================================================================//

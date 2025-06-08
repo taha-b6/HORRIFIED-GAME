@@ -562,3 +562,69 @@ Deracola::Deracola(){
 Invisable_man::Invisable_man(){
     m_name = "invisible man";
 }
+//========================================================================================================================//
+void Deracola:: set_location(string place){
+wher_is_monster = place;
+
+}
+//========================================================================================================================//
+void Invisable_man:: set_location(string place){
+wher_is_monster = place;
+}
+//========================================================================================================================//
+bool Deracola:: deracula_strike(){
+cout<<"Deracula is attaking..."<<endl;
+
+if ("villager "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Dercula killd a villager!!!!!"<<endl;}// خارج کردن محلی
+
+if ("hero "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Dercula damaged a hero!!!!!"<<endl;}// بردن قهرمان به بیمارستان
+
+if ("!villager "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Dercula didnt kill anyone <<there is no one here>> !!!!!"<<endl;}
+
+if ("!hero "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Dercula didnt kill anyone <<there is no one here>> !!!!!"<<endl;}
+
+if ("hero && villager "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Dercula  damaged a hero!!!!!"<<endl;}//بردن قهرمان به بیمارستان
+
+if ("!hero && !villager "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Dercula didnt kill anyone <<there is no one here>> !!!!!"<<endl;}
+
+}
+//========================================================================================================================//
+void Deracola:: deracula_special_power(){
+cout<<"DARK CHARM IS STARTED!!!!!!"<<endl;
+                                            //قهرمان فعلی به مکان دراکولا منتقل کن
+cout<<"DARK CHARM ENDED"<<endl;
+                                        }
+//========================================================================================================================//
+bool Invisable_man::invisible_man_strike(){
+cout<<"Invisible man is attaking..."<<endl;
+
+if ("villager "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Invisible man killd a villager!!!!!"<<endl;}//خارج کردن محلی
+
+if ("hero "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Invisible man  can not damaged a hero!!!!!"<<endl;}
+
+if ("!villager "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Invisible man didnt kill anyone <<there is no one here>> !!!!!"<<endl;}
+
+if ("!hero "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Invisible man didnt kill anyone <<there is no one here>> !!!!!"<<endl;}
+
+if ("hero && villager "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Invisible man can not kill the villagers <<there is a hero in this place>> !!!!!"<<endl;}
+
+if ("!hero && !villager "){// داخل شرط چک کن ببین کسی داخل مکان دراکولا هست یانه
+cout<<"Invisible man didnt kill anyone <<there is no one here>> !!!!!"<<endl;}
+}
+//========================================================================================================================//
+void Invisable_man::invisible_man_special_power(){
+cout<<"STALK UNSEEN IS STARTED!!!!!!!!"<<endl;
+                              //اخر فاز هیولا <<بعد از حمله هیولا های دیگر>>مرد نامرِی را تا حداکثر دوخانه به سمت نزدیکترین روستایی ببر
+cout<<"STALK UNSEEN ENDED"<<endl;
+                            }
