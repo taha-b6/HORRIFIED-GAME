@@ -19,12 +19,11 @@ private:
     static Monster *deracula;
 
 public:
-
     moving(Hero *, Hero *, Monster *, Monster *);
     void set_places(std::map<std::string, place> &);
     std::string name_of_place;
     static void set_new_location(int = 0); // برای حرکت دادن هیولا ها دو خانه و اگر ورودی داشت حرکت قهرمان ها
-    static void set_new_location(Hero *, std::string , bool = false);
+    static void set_new_location(Hero *, std::string);
     static void set_new_location(std::string); // برای حرکت دادن مرد نامرئی
     static void set_new_location(std::string, int );
     static void set_new_lacation_for_villager(Hero *, std::string, std::string = "");
@@ -50,8 +49,6 @@ public:
     static void set_location_deracula(std::string="");//یردن دراکولا به موقیت اخرین قهرمان
     static void set_location_invisible_man();
     static std::string get_place_whit_max_item();
-    static void special_power_invi();
-    static void special_power_der();
     
 };
 //========================================================================================================================//

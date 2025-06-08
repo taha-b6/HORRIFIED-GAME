@@ -34,7 +34,7 @@ private:
 public:
     place(std::string n);
     std::string name;
-    void put_in_place(Monster * , bool=false);
+    void put_in_place(Monster *);
     void go_to_near_place(Monster *);
     void go_to_near_place(Hero *);
     void put_in_place(Hero *);
@@ -50,14 +50,6 @@ public:
     void erase_item();
     int get_num_of_items();
     std::vector<place>get_p();
-    std::string has_villager();
-    void delete_monster(Monster *);
-    void delete_hero(Hero *);
-    bool can_invisible_man();
-    void put_hero(Hero*);
-    bool can_deracola();
-     Hero* get_hero_in_place();
-
     ~place();
 };
 //========================================================================================================================//

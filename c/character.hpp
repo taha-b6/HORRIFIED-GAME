@@ -25,11 +25,11 @@ struct monster_card_info{
 class Monster{
 
 protected:
-    static::std::string wher_is_monster;
+    std::string wher_is_monster;
 public:
     std::string m_name;
 
-    std::string  get_monster_place();
+    std::string get_place();
     virtual ~Monster();
     
     void set_location(std::string); // اسم مکانی که او قرار دارد ست میشود
@@ -104,9 +104,8 @@ public:
     void increase_action(int);
     void increase_perk_card(perk_card *);
     void domp_perk(perk_card *);
-    std::string get_hero_place();
+    std::string get_place();
     bool can_distroy(int , std::string);
-    void get_one_item();
 
 protected:
     std::string wher_is_hero;

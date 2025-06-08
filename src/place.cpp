@@ -5,33 +5,82 @@
 #include <algorithm>
 #include "place.hpp"
 #include <map>
+#include <algorithm>
 
 //========================================================================================================================//
 
 using namespace std;
 
-place::place(string n):name(n){
-    if(n=="cave"||n=="dungeon"||n=="crypt"||n=="graveyard"){
-        tabot=true;
+place::place(string n) : name(n)
+{
+    if (n == "cave" || n == "dungeon" || n == "crypt" || n == "graveyard")
+    {
+        tabot = true;
     }
 }
 
-
-place::~place(){}
+place::~place() {}
 //========================================================================================================================//
-
-void place::put_in_place(Monster *m)
+void place::delete_monster(Monster *m)
 {
-    for (auto &mon : monster_in_place)
+    auto it = std::find(monster_in_place.begin(), monster_in_place.end(), m);
+    if (it != monster_in_place.end())
     {
-        if (m != mon)
-        {
-            monster_in_place.push_back(m);
-            m->set_location(this->name);
-            return;
-        }
+        monster_in_place.erase(it);
     }
-    throw runtime_error("monster was in place ");
+}
+//==============================================================
+void place::delete_hero(Hero *h)
+{
+    auto it = std::find(hero_in_place.begin(), hero_in_place.end(), h);
+    if (it != hero_in_place.end())
+    {
+        hero_in_place.erase(it);
+    }
+}
+
+void place::put_in_place(Monster *m, bool f = false)
+{
+    if (monster_in_place.size() == 2)
+    {
+        throw runtime_error("monster was in place ");
+        return;
+    }
+    if (monster_in_place.size() == 1 && monster_in_place.back() == m)
+    {
+        throw runtime_error("monster was in place ");
+        return;
+    }
+    if (f)
+    {
+        moving::get_place(m->get_monster_place()).delete_monster(m);
+
+        monster_in_place.push_back(m);
+        m->set_location(this->name);
+    }
+    if (m->m_name == "invisible_man")
+    {
+        if (villager_in_place.empty())
+        {
+            throw runtime_error("this place was not good");
+        }
+        moving::get_place(m->get_monster_place()).delete_monster(m);
+
+        monster_in_place.push_back(m);
+        m->set_location(this->name);
+        return;
+    }
+    if (m->m_name == "deracula")
+    {
+        if (hero_in_place.empty())
+        {
+            throw runtime_error("this place was not good");
+        }
+        moving::get_place(m->get_monster_place()).delete_monster(m);
+        monster_in_place.push_back(m);
+        m->set_location(this->name);
+        return;
+    }
 }
 //========================================================================================================================//
 void place::put_in_place(Hero *h)
@@ -41,6 +90,7 @@ void place::put_in_place(Hero *h)
     {
         if (h != her)
         {
+            moving::get_place(h->get_hero_place()).delete_hero(h);
             hero_in_place.push_back(h);
             h->set_location(this->name);
             return;
@@ -58,7 +108,6 @@ void place::go_to_near_place(Monster *monsters)
         try
         {
             put_in_place(monsters);
-            cout << " new location of " << monsters->name << " is : " << this->name << endl;
             succsesful = true;
             break;
         }
@@ -76,6 +125,8 @@ void place::go_to_near_place(Hero *hero)
         try
         {
             put_in_place(hero);
+
+
             cout << " new location of " << hero->name << " is : " << this->name << endl;
             succsesful = true;
             break;
@@ -96,118 +147,219 @@ void place::show_near_place()
     }
 }
 //========================================================================================================================//
-void place::put_villager_in_place(Hero* h, place &origin, place &destination)
+void place::put_villager_in_place(Hero *h, place &origin, place &destination)
 {
-    //وقتی استفاده میشود که action moveباشد 
+    // وقتی استفاده میشود که action moveباشد
     destination.villager_in_place.insert(
         destination.villager_in_place.end(),
         origin.villager_in_place.begin(),
         origin.villager_in_place.end());
     origin.villager_in_place.clear();
-    for(auto & v: destination.villager_in_place){
+    for (auto &v : destination.villager_in_place)
+    {
         v.set_place(destination.name);
-        if(v.is_safe_place()){
-            h->increase_perk_card(bag_perks::get_one_perk_card());
-        }
-    }   
-}
-//========================================================================================================================//
-void place::put_villager_in_place(Hero* h , place& p , std::string place_name =""){
-    //وقتی استفاده میشود که action guid باشد
-    if(place_name!=""){
-        //گذاشتن محلی در خانه قهرمان
-        Villager& v= near_place.back().villager_in_place.back();
-        p.villager_in_place.push_back(v);
-        v.set_place(p.name);
-        near_place.back().villager_in_place.pop_back();
-        if(p.villager_in_place.back().is_safe_place()){
+        if (v.is_safe_place())
+        {
             h->increase_perk_card(bag_perks::get_one_perk_card());
         }
     }
-    if(place_name==""){
-        //گذاشتن محلی در خانه قهرمان در مکان های همسایه
-        Villager & v =p.villager_in_place.back();
-        for(auto & pl:p.near_place){
-            if(pl.name==v.name_of_safe_place()){
+}
+//========================================================================================================================//
+void place::put_villager_in_place(Hero *h, place &p, std::string place_name = "")
+{
+    // وقتی استفاده میشود که action guid باشد
+    if (place_name != "")
+    {
+        // گذاشتن محلی در خانه قهرمان
+        Villager &v = near_place.back().villager_in_place.back();
+        p.villager_in_place.push_back(v);
+        v.set_place(p.name);
+        near_place.back().villager_in_place.pop_back();
+        if (p.villager_in_place.back().is_safe_place())
+        {
+            h->increase_perk_card(bag_perks::get_one_perk_card());
+        }
+    }
+    if (place_name == "")
+    {
+        // گذاشتن محلی در خانه قهرمان در مکان های همسایه
+        Villager &v = p.villager_in_place.back();
+        for (auto &pl : p.near_place)
+        {
+            if (pl.name == v.name_of_safe_place())
+            {
                 pl.villager_in_place.push_back(v);
                 v.set_place(pl.name);
                 h->increase_perk_card(bag_perks::get_one_perk_card());
                 return;
             }
-            cout<<"please enter name of place which do you like villager go to it\n";
+            cout << "please enter name of place which do you like villager go to it\n";
             string n;
-            cin>>n;
-            place& plac= moving::get_place(n);
+            cin >> n;
+            place &plac = moving::get_place(n);
             plac.villager_in_place.push_back(v);
             v.set_place(plac.name);
 
-        if(plac.villager_in_place.back().is_safe_place()){
-            h->increase_perk_card(bag_perks::get_one_perk_card());}
+            if (plac.villager_in_place.back().is_safe_place())
+            {
+                h->increase_perk_card(bag_perks::get_one_perk_card());
+            }
         }
     }
 }
 //========================================================================================================================//
- vector<item> place::get_items(int a){
-    vector <item> temp;
-    if(a>items_list.size()){
+vector<item> place::get_items(int a)
+{
+    vector<item> temp;
+    if (a > items_list.size())
+    {
         throw invalid_argument("here dont have enogh item");
     }
-    for(int i =0 ; i<a ; ++i){
+    for (int i = 0; i < a; ++i)
+    {
         temp.push_back(items_list.back());
-        items_list.pop_back();//باید برود در وکتور خارج از بازی   
+        items_list.pop_back(); // باید برود در وکتور خارج از بازی
     }
     return temp;
- }
- //========================================================================================================================//
- bool place::get_tabot(){
+}
+//========================================================================================================================//
+bool place::get_tabot()
+{
     return tabot;
- }
- //========================================================================================================================//
- void place::destroy_tabot(){
-    tabot==false;
- }
- //========================================================================================================================//
- int place::get_monster_in_place(){
-    if(monster_in_place.empty()){
+}
+//========================================================================================================================//
+void place::destroy_tabot()
+{
+    tabot == false;
+}
+//========================================================================================================================//
+int place::get_monster_in_place()
+{
+    if (monster_in_place.empty())
+    {
         return 0;
     }
-    if(monster_in_place.size()==2){
+    if (monster_in_place.size() == 2)
+    {
         return 1;
     }
-    if(Invisable_man * m = dynamic_cast<Invisable_man*>(monster_in_place.back())){
+    if (Invisible_man *m = dynamic_cast<Invisible_man *>(monster_in_place.back()))
+    {
         return 2;
     }
-    if(Deracola* d = dynamic_cast<Deracola*> (monster_in_place.back())){
+    if (Deracula *d = dynamic_cast<Deracula *>(monster_in_place.back()))
+    {
         return 3;
     }
- }
- //========================================================================================================================//
- void place::kill_monster(int a) {
+}
+//========================================================================================================================//
+void place::kill_monster(int a)
+{
     bool found = false;
 
-    for (auto it = monster_in_place.begin(); it != monster_in_place.end(); ++it) {
-        if (a == 1) { 
-            if (dynamic_cast<Invisable_man*>(*it)) {
+    for (auto it = monster_in_place.begin(); it != monster_in_place.end(); ++it)
+    {
+        if (a == 1)
+        {
+            if (dynamic_cast<Invisible_man *>(*it))
+            {
                 monster_in_place.erase(it);
                 std::cout << "Invisible man removed from place.\n";
                 found = true;
                 break;
             }
-        } else if (a == 2) { 
-            if (dynamic_cast<Deracola*>(*it)) {
+        }
+        else if (a == 2)
+        {
+            if (dynamic_cast<Deracula *>(*it))
+            {
                 monster_in_place.erase(it);
-                std::cout << "Deracola removed from place.\n";
+                std::cout << "Deracula removed from place.\n";
                 found = true;
                 break;
             }
         }
     }
-    if (!found) {
+    if (!found)
+    {
         std::cout << "Monster not found in place.\n";
     }
 }
 //========================================================================================================================//
-std::vector<place> place::get_p(){
+std::vector<place> place::get_p()
+{
     return near_place;
 }
 //========================================================================================================================//
+void place::erase_item()
+{
+    items_list.clear();
+}
+//==============================================================================================//
+int place::get_num_of_items()
+{
+    return items_list.size();
+}
+//=============================================================================//
+void place::put_vilager(Villager v)
+{
+    villager_in_place.push_back(v);
+    v.set_place(this->name);
+}
+//**************************************************************************//
+string place::has_villager()
+{
+    if (!villager_in_place.empty())
+    {
+        return this->name;
+    }
+    for (const auto &p : near_place)
+    {
+        if (!p.villager_in_place.empty())
+        {
+            return p.name;
+        }
+    }
+    for (const auto &p : near_place)
+    {
+        for (const auto &a : p.near_place)
+        {
+            if (!a.near_place.empty())
+            {
+                return a.name;
+            }
+        }
+    }
+    return "";
+}
+//==================================================================================
+bool place::can_invisible_man()
+{
+    if (hero_in_place.empty() && !villager_in_place.empty())
+    {
+        cout << villager_in_place.back().name << "is killed" << endl;
+        villager_in_place.pop_back();
+        return true;
+    }
+    return false;
+}
+//=======================================================================
+void place::put_hero(Hero* h){
+    moving::get_place(h->get_hero_place()).delete_hero(h);
+    hero_in_place.push_back(h);
+    h->set_location(this->name);
+}
+//=====================================================================================
+bool place::can_deracola(){
+    if(!hero_in_place.empty()){
+
+        return true;
+    }
+    return false;
+}
+//==========================================================================================
+ Hero* place::get_hero_in_place(){
+    return hero_in_place.back();
+}
+
+

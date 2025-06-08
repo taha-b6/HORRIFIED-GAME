@@ -10,8 +10,7 @@
 
 using namespace std;
 //========================================================================================================================//
-void do_perk(Hero *h)
-{
+void do_perk(Hero *h){
     int a;
     while (1)
     {
@@ -67,8 +66,7 @@ void do_perk(Hero *h)
     }
 }
 //========================================================================================================================//
-int which_perk_card(perk_card *c)
-{
+int which_perk_card(perk_card *c){
     if (dynamic_cast<visit_from_the_detective *>(c))
     {
         return 1;
@@ -99,8 +97,7 @@ int which_perk_card(perk_card *c)
     }
 }
 //========================================================================================================================//
-string to_string(Place p)
-{
+string to_string(Place p){
     switch (p)
     {
     case precinct:
@@ -139,51 +136,30 @@ string to_string(Place p)
 }
 
 //========================================================================================================================//
-string Monster::get_monster_place()
-{
+string Monster::get_place(){
     return wher_is_monster;
 }
 //========================================================================================================================//
 Hero::Hero() {}
 //========================================================================================================================//
-void Hero::set_location(string place_name)
-{
+void Hero::set_location(string place_name){
     wher_is_hero = place_name;
 }
 //========================================================================================================================//
-void Monster::set_location(string place_name)
-{
+void Monster::set_location(string place_name){
     wher_is_monster = place_name;
 }
 //========================================================================================================================//
-void Hero::increase_action(int new_action)
-{
+void Hero::increase_action(int new_action){
     action += new_action;
 }
-//=================================================================
-void Hero::get_one_item()
-{
-    if (items.size() > 0)
-    {
-        item temp = items.back();
-        // باید ایتم رفته به سبد برگردد
-        items.pop_back();
-    }
-    else
-    {
-        throw runtime_error("you dont havr enogh item");
-    }
-}
-
 //========================================================================================================================//
 
-string Hero::get_hero_place()
-{
+string Hero::get_place(){
     return wher_is_hero;
 }
 //========================================================================================================================//
-void Hero::increase_perk_card(perk_card *new_perk)
-{
+void Hero::increase_perk_card(perk_card *new_perk){
     for (auto &card : perk_cards)
     {
         if (card->name == new_perk->name)
@@ -241,18 +217,15 @@ Archaeologist::Archaeologist(std::string place_name)
     name = "Archaeologist";
 }
 //========================================================================================================================//
-void Archaeologist::set_action()
-{
+void Archaeologist::set_action(){
     action = 4;
 }
 //========================================================================================================================//
-void Mayor::set_action()
-{
+void Mayor::set_action(){
     action = 5;
 }
 //========================================================================================================================//
-bool Hero::can_distroy(int power, string color)
-{
+bool Hero::can_distroy(int power, string color){
     bool can = false;
     int p = 0;
     std::vector<item *> temp;
@@ -272,7 +245,7 @@ bool Hero::can_distroy(int power, string color)
         }
     }
     if (p >= power)
-    { // tempباید به کیسه اضافهشود
+    {
         items.erase(std::remove_if(items.begin(), items.end(),
                                    [&temp](const item &i)
                                    {
@@ -585,8 +558,7 @@ void Villager::set_place(std::string p)
     name_of_place = p;
 }
 //========================================================================================================================//
-bool Villager::is_safe_place()
-{
+bool Villager::is_safe_place(){
     if (name_of_place == safe_place)
     {
         return true;
@@ -594,52 +566,5 @@ bool Villager::is_safe_place()
     else
     {
         return false;
-    }
-}
-//=====================================================================================
-void Invisible_man::invisible_man_special_power()
-{
-    moving::special_power_invi();
-}
-//============================================================================
-bool Invisible_man::invisible_man_strike()
-{
-    if (moving::get_place(wher_is_monster).can_invisible_man())
-    {
-        return true;
-        // فاز هیولا رد شود
-    }
-}
-//================================================================================]
-void Deracula::Deracula_special_power()
-{
-    moving::special_power_der();
-}
-//================================================================================
-
-bool Deracula::Deracula_strike()
-{
-    if (moving::get_place(wher_is_monster).can_deracola())
-    {
-        cout << moving::get_place(wher_is_monster).get_hero_in_place()->name << "is in dangur";
-        cout << moving::get_place(wher_is_monster).get_hero_in_place()->name << "do you like get one item enter one if you like go to hospital enter 2 \n";
-        int a;
-        cin >> a;
-        if (a == 1)
-        {
-            try
-            {
-                moving::get_place(wher_is_monster).get_hero_in_place()->get_one_item();
-            }
-            catch (runtime_error &e)
-            {
-                cout << e.what() << endl;
-                moving::set_new_location(moving::get_place(wher_is_monster).get_hero_in_place(), "hospital", true);
-            }
-        }
-        if (a != 1)
-        {
-            moving::set_new_location(moving::get_place(wher_is_monster).get_hero_in_place(), "hospital", true);
-        }
     }
 }
