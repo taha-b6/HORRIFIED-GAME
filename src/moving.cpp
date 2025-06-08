@@ -124,7 +124,7 @@ place & moving::get_near_place(std::string n){
  void moving::set_new_location(Monster* m, int a ){
     //code
     if(m==deracola){
-        deracola.set
+        deracola.set;
     }
  }
 
