@@ -423,3 +423,19 @@ void the_Ichthyologist::play_monster_card(){}
 //=====================================================================================================//
 //void the_Ichthyologist::do_strike(){}
 //=====================================================================================================//
+monster_card* draw_random_card(std::vector<monster_card*>& deck) {
+    if (deck.empty()) {
+        return nullptr;  // یا throw std::runtime_error("Deck is empty");
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, deck.size() - 1);
+
+    int index = dist(gen);
+    monster_card* selected = deck[index];
+
+    deck.erase(deck.begin() + index);  // حذف کارت از دسته
+
+    return selected;  // برگردوندن کارت انتخاب‌شده
+}

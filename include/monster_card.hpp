@@ -63,7 +63,7 @@ private:
 public:
     sunrise();
     virtual ~sunrise();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/   
@@ -80,7 +80,7 @@ private:
 public:
     thief();
     virtual ~thief();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -95,7 +95,7 @@ private:
 public:
     the_delivery();
     virtual ~the_delivery();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -110,7 +110,7 @@ private:
 public:
     fortune_teller();
     virtual ~fortune_teller();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/  
@@ -125,7 +125,7 @@ private:
 public:
     former_employer();
     virtual ~former_employer();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -140,7 +140,7 @@ private:
 public:
     hurried_assistant();
     virtual ~hurried_assistant();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -155,7 +155,7 @@ private:
 public:
     the_inocent();
     virtual ~the_inocent();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -170,7 +170,7 @@ private:
 public:
     egyptian_expert();
     virtual ~egyptian_expert();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -185,11 +185,42 @@ private:
 public:
     the_Ichthyologist();
     virtual ~ the_Ichthyologist();
-    void play_monster_card()override;
+    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
     virtual void show_item_num(); 
 };
 //=======================================================================================================//
+class bag_of_monster_card{
+private:
+monster_card m_card;
+form_of_the_bat form_bat1;
+form_of_the_bat form_bat2;
+form_of_the_bat form_bat3;
+sunrise sun1;
+sunrise sun2;
+sunrise sun3;
+thief thief1;
+thief thief2;
+thief thief3;
+thief thief4;
+thief thief5;
+the_delivery deliver;
+fortune_teller tell;
+former_employer former;
+hurried_assistant assist;
+the_inocent inocent;
+egyptian_expert expert;
+the_Ichthyologist ich;
+
+std::vector<monster_card*> monster_card_bag{&form_bat1 , &form_bat2 , &form_bat3 ,&sun1 ,&sun2 ,&sun3 , &thief1 ,&thief2 ,&thief3 ,&thief4 ,&thief5 ,&deliver ,&tell ,&former ,&assist ,&inocent ,&expert ,&ich};
+public:
+monster_card* draw_random_card(std::vector<monster_card*>& deck); // بعد از استفاده از این تابع متد نشون دادن کارت رو که در کلاس های کارت هیولا نوشتم فراخوانی کن
+
+
+
+
+protected:
+};
 #endif
