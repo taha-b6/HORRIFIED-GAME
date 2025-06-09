@@ -8,6 +8,53 @@
 //========================================================================================================================//
 using namespace std;
 //========================================================================================================================//
+bag_items::bag_items() {
+    item_info i;
+
+    i.count = 2; 
+
+    i = {"flower", "docks", "yellow", 2, 2}; items_in_the_game.push_back(i);
+    i = {"tarot deck", "camp", "yellow", 3, 2}; items_in_the_game.push_back(i);
+    i = {"garlic", "inn", "yellow", 2, 2}; items_in_the_game.push_back(i);
+    i = {"mirrored box", "mansion", "yellow", 3, 2}; items_in_the_game.push_back(i);
+    i = {"stake", "abbey", "yellow", 3, 2}; items_in_the_game.push_back(i);
+    i = {"holy water", "church", "yellow", 4, 2}; items_in_the_game.push_back(i);
+    i = {"crucifix", "graveyard", "yellow", 2, 2}; items_in_the_game.push_back(i);
+
+    i = {"torch", "barn", "red", 2, 2}; items_in_the_game.push_back(i);
+    i = {"silver dagger", "tower", "red", 3, 2}; items_in_the_game.push_back(i);
+    i = {"vampire book", "mansion", "red", 4, 2}; items_in_the_game.push_back(i);
+    i = {"explosive vial", "cave", "red", 3, 2}; items_in_the_game.push_back(i);
+    i = {"axe", "barn", "red", 2, 2}; items_in_the_game.push_back(i);
+    i = {"blood sample", "precinct", "red", 2, 2}; items_in_the_game.push_back(i);
+    i = {"crossbow", "dungeon", "red", 4, 2}; items_in_the_game.push_back(i);
+    i = {"spear", "crypt", "red", 3, 2}; items_in_the_game.push_back(i);
+
+    i = {"mind elixir", "laboratory", "blue", 2, 2}; items_in_the_game.push_back(i);
+    i = {"hypnotic charm", "institute", "blue", 3, 2}; items_in_the_game.push_back(i);
+    i = {"ghost mirror", "mansion", "blue", 2, 2}; items_in_the_game.push_back(i);
+    i = {"scientific journal", "institute", "blue", 4, 2}; items_in_the_game.push_back(i);
+    i = {"telepathy stone", "laboratory", "blue", 2, 2}; items_in_the_game.push_back(i);
+    i = {"magnetic compass", "camp", "blue", 3, 2}; items_in_the_game.push_back(i);
+    i = {"dream catcher", "inn", "blue", 2, 2}; items_in_the_game.push_back(i);
+
+    i = {"sacred scroll", "church", "yellow", 2, 2}; items_in_the_game.push_back(i);
+    i = {"crystal ball", "tower", "yellow", 3, 2}; items_in_the_game.push_back(i);
+    i = {"magic talisman", "cave", "yellow", 2, 2}; items_in_the_game.push_back(i);
+    i = {"sun medallion", "graveyard", "yellow", 4, 2}; items_in_the_game.push_back(i);
+
+    i = {"ancient relic", "museum", "red", 3, 2}; items_in_the_game.push_back(i);
+    i = {"ritual knife", "crypt", "red", 2, 2}; items_in_the_game.push_back(i);
+    i = {"soul urn", "dungeon", "red", 3, 2}; items_in_the_game.push_back(i);
+
+    i = {"mental tonic", "hospital", "blue", 2, 2}; items_in_the_game.push_back(i);
+    i = {"calming incense", "theater", "blue", 2, 2}; items_in_the_game.push_back(i);
+    i = {"spirit lantern", "cemetery", "yellow", 2, 2}; items_in_the_game.push_back(i);
+    i = {"protective amulet", "precinct", "blue", 3, 2}; items_in_the_game.push_back(i);
+    i = {"enchanted rope", "camp", "red", 2, 2}; items_in_the_game.push_back(i);
+}
+
+//=============================================================================================================//
 perk_card* bag_perks::get_one_perk_card(){
     if (Perk_cards.empty())
         return nullptr;
@@ -18,7 +65,8 @@ perk_card* bag_perks::get_one_perk_card(){
     original->set_count(count);
 
     if (count == 0)
-    {
+    {    std::string name;
+
         Perk_cards.pop_back();
         delete original;
     }
@@ -29,7 +77,20 @@ perk_card* bag_perks::get_one_perk_card(){
     return copy;
 }
 //========================================================================================================================//
-void bag_perks::constract_perk_cart(std::vector<card> c){} // باید با newکردن کارت درست کنی
+void bag_perks::constract_perk_cart(){
+    perk_card* p = new visit_from_the_detective(3);
+    Perk_cards.push_back(p);
+    p = new break_of_dawn(3);
+    Perk_cards.push_back(p);
+    p=new overstock(4);
+    Perk_cards.push_back(p);
+    p=new late_into_the_night(4);
+    Perk_cards.push_back(p);
+    p=new repel(3);
+    Perk_cards.push_back(p);
+    p=new hurry(3);
+    Perk_cards.push_back(p);
+}
 //========================================================================================================================//
 void bag_items::put_Itme_IN_Place(int a){
     while (a > 0)
@@ -39,11 +100,11 @@ void bag_items::put_Itme_IN_Place(int a){
             if (items_out_the_game.empty())
                 break;
 
-            std::string n = items_out_the_game.back().name;
+            std::string n = items_out_the_game.back().location;
 
             auto it = moving::get_place(n);
 
-            item newItem(items_out_the_game.back().power, items_out_the_game.back().color);
+            item newItem(items_out_the_game.back().power, items_out_the_game.back().color , items_out_the_game.back().name);
             it.items_list.push_back(newItem);
             a -= 1;
             items_out_the_game.back().count -= 1;
@@ -56,11 +117,11 @@ void bag_items::put_Itme_IN_Place(int a){
         }
         else
         {
-            std::string n = items_in_the_game.back().name;
+            std::string n = items_in_the_game.back().location;
 
             auto it = moving::get_place(n);
 
-            item newItem(items_in_the_game.back().power, items_in_the_game.back().color);
+            item newItem(items_in_the_game.back().power, items_in_the_game.back().color,items_in_the_game.back().name );
             it.items_list.push_back(newItem);
             a -= 1;
             items_in_the_game.back().count -= 1;
@@ -73,6 +134,25 @@ void bag_items::put_Itme_IN_Place(int a){
         }
     }
 }
+//=======================================================================================
+item::item(int p, std::string c , std::string n): power(p) , color(c) , name(n){
+}
+//==================================================================================================
+void bag_items::icraese_item_out_the_game(item i){
+    for(auto & it: items_out_the_game){
+        if(i.name==it.name ){
+            ++it.count;
+            return;
+        }
+    }
+    item_info l;
+    l.name=i.name;
+    l.color=i.get_coler();
+    l.count=1;
+    l.power=i.get_power();
+    items_out_the_game.push_back(l);
+}
+
 //========================================================================================================================//
 string item::get_coler() const{
     return color;

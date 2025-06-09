@@ -26,7 +26,7 @@ class place{
 private:
     coordinate place_pos;
     static std::vector<item> items_list;
-    static std::vector<place> near_place;
+    static std::vector<std::string> near_place;
     std::vector<Monster *> monster_in_place;
     std::vector<Hero *> hero_in_place;
     static std:: vector <Villager> villager_in_place;
@@ -49,13 +49,14 @@ public:
     void kill_monster(int);
     void erase_item();
     int get_num_of_items();
-    std::vector<place>get_p();
+    std::vector<std::string>get_p();
     std::string has_villager();
     void delete_monster(Monster *);
     void delete_hero(Hero *);
     bool can_invisible_man();
     void put_hero(Hero*);
     bool can_deracola();
+    std::vector<std::string> show_villager_monster();
      Hero* get_hero_in_place();
 
     ~place();

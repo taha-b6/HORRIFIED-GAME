@@ -10,7 +10,7 @@
 //========================================================================================================================//
 enum actions {Move , Guide , Pickup , Advance , Defeat , Special_Action};
 //========================================================================================================================//
-enum Place {precinct , mansion , inn , camp , theatre , cave , institute , crypt , barn , dungeon , docks , tower , laboratory , graveyard , hospital};
+enum Place {precinct , mansion ,musium , inn , camp , theatre , cave , institute , crypt , barn , dungeon , docks , tower , laboratory , graveyard , hospital , abbey , church , shop};
 
 //========================================================================================================================//
 struct monster_card_info{

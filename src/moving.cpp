@@ -5,6 +5,11 @@
 using namespace std;
 //========================================================================================================================//
 Hero *moving::last = nullptr;
+//======================================================================================
+void moving::set_places(std::map<std::string, place> & p){
+    places=p;
+}
+
 //============================================================================================
 moving::moving(Hero *first, Hero *seccend, Monster *dera, Monster *invisible_man)
 {
@@ -14,49 +19,55 @@ moving::moving(Hero *first, Hero *seccend, Monster *dera, Monster *invisible_man
     invisible_man = invisible_man;
 }
 //========================================================================================================================//
-void moving::set_new_location(Hero *h, std::string place_name , bool f=false)
+void moving::set_new_location(Hero *h, std::string place_name, bool f = false)
 {
-        place &themp = places[h->get_hero_place()];
-    if(!f){
-    bool succesful = false;
-    for (auto &p : themp.near_place)
+    place &themp = places[h->get_hero_place()];
+    if (!f)
     {
-        if (place_name == p.name)
+        bool succesful = false;
+        for (auto &p : themp.near_place)
         {
-            succesful = true;
-            try
+            if (place_name == p)
             {
-                p.put_in_place(h);
-                cout << "do you like move villager if yes enter one\n";
-                int a;
-                cin >> a;
-                if (a == 1)
+                succesful = true;
+                try
                 {
+                    get_place(p).put_in_place(h);
+                    cout << "do you like move villager if yes enter one\n";
+                    int a;
+                    cin >> a;
+                    if (a == 1)
+                    {
 
-                    place::put_villager_in_place(h, themp, p);
+                        place::put_villager_in_place(h, themp, p);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                else
+                catch (runtime_error &e)
                 {
-                    return;
+                    cerr << e.what() << endl;
+                    throw;
                 }
-            }
-            catch (runtime_error &e)
-            {
-                cerr << e.what() << endl;
-                throw;
             }
         }
+        if (!succesful)
+        {
+            throw runtime_error("place not found");
+        }
     }
-    if (!succesful)
+    if (f)
     {
-        throw runtime_error("place not found");
-    }
-}
-    if(f){
         moving::get_place(h->get_hero_place()).delete_hero(h);
-        try{
-        themp.put_in_place(h);}
-        catch(...){}
+        try
+        {
+            themp.put_in_place(h);
+        }
+        catch (...)
+        {
+        }
     }
 }
 //========================================================================================================================//
@@ -103,7 +114,14 @@ void moving::set_new_lacation_for_villager(Hero *h, string place_of_hero, string
 //********************************************************************//
 void moving::set_location_for_villagers(Villager v, std::string n)
 {
-    places[n].put_vilager(v);
+    try
+    {
+        places[n].put_vilager(v);
+    }
+    catch (runtime_error &e)
+    {
+        cerr << e.what() << endl;
+    }
 }
 
 //========================================================================================================================//
@@ -134,11 +152,11 @@ void moving::kill_deracula()
 //========================================================================================================================//
 place &moving::get_near_place(std::string n)
 {
-    vector<place> p = places[n].get_p();
+    vector<string> p = places[n].get_p();
     cout << "near place is\n";
     for (auto &pl : p)
     {
-        cout << pl.name << endl;
+        cout << pl << endl;
     }
     cout << "which place you like \n";
     string pla;
@@ -161,7 +179,7 @@ void moving::set_location_deracula(std::string place_name = "")
         }
         if (place_name != "")
         {
-            get_place(place_name).put_in_place(deracula , true);
+            get_place(place_name).put_in_place(deracula, true);
         }
     }
     catch (runtime_error &e)
@@ -188,9 +206,9 @@ string moving::get_place_whit_max_item()
 void moving::set_location_invisible_man()
 {
     try
-    {  
+    {
         get_place(invisible_man->get_monster_place()).delete_monster(invisible_man);
-        places[get_place_whit_max_item()].put_in_place(invisible_man , true);
+        places[get_place_whit_max_item()].put_in_place(invisible_man, true);
         places[get_place_whit_max_item()].erase_item();
     }
     catch (runtime_error &e)
@@ -203,19 +221,72 @@ void moving::set_new_location(std::string name, int a)
 {
     if (name == "deracula")
     {
-        for (int i = 0; i < a; ++i)
+        if (a == 1)
         {
-            places[deracula->get_monster_place()].go_to_near_place(deracula);
+
+            for (auto &p : places[deracula->get_monster_place()].near_place)
+            {
+                if (!get_place(p).hero_in_place.empty())
+                {
+                    get_place(p).go_to_near_place(deracula);
+                    return;
+                }
+            }
+            string p = places[deracula->get_monster_place()].near_place.back();
+            get_place(p).go_to_near_place(deracula);
+        }
+        if (a == 2)
+        {
+            for (auto &p : places[deracula->get_monster_place()].near_place)
+            {
+                for (auto &pl : get_place(p).near_place)
+                {
+                    if (!get_place(pl).hero_in_place.empty())
+                    {
+                        get_place(pl).go_to_near_place(deracula);
+                        return;
+                    }
+                }
+            }
+            string p = places[deracula->get_monster_place()].near_place.back();
+            get_place(p).go_to_near_place(deracula);
         }
     }
     if (name == "invisible_man")
     {
-        for (int i = 0; i < a; ++i)
+        if (a == 1)
         {
-            places[invisible_man->get_monster_place()].go_to_near_place(invisible_man);
+
+            for (auto &p : places[deracula->get_monster_place()].near_place)
+            {
+                if (!get_place(p).villager_in_place.empty())
+                {
+                    get_place(p).go_to_near_place(deracula);
+                    return;
+                }
+            }
+            string p = places[deracula->get_monster_place()].near_place.back();
+            get_place(p).go_to_near_place(deracula);
+        }
+        if (a == 2)
+        {
+            for (auto &p : places[deracula->get_monster_place()].near_place)
+            {
+                for (auto &pl : get_place(p).near_place)
+                {
+                    if (!get_place(pl).villager_in_place.empty())
+                    {
+                        get_place(pl).go_to_near_place(deracula);
+                        return;
+                    }
+                }
+            }
+            string p = places[deracula->get_monster_place()].near_place.back();
+            get_place(p).go_to_near_place(deracula);
         }
     }
 }
+
 //================================================================================================]
 void moving::special_power_invi()
 {
@@ -224,7 +295,7 @@ void moving::special_power_invi()
     {
         try
         {
-            places[n].put_in_place(invisible_man , true);
+            places[n].put_in_place(invisible_man, true);
             return;
         }
         catch (runtime_error &e)
@@ -242,6 +313,7 @@ void moving::special_power_invi()
     }
 }
 //========================================================================
-void moving::special_power_der(){
+void moving::special_power_der()
+{
     places[deracula->get_monster_place()].put_hero(last);
 }

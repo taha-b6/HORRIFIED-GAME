@@ -13,12 +13,9 @@ void monster_card::show_event()
     cout << event_bio << endl;
 }
 //=====================================================================================================//
-void monster_card::play_monster_card()
+void monster_card::play_monster_card(int& trrorlevel)
 {
-    //( ابعی که دراکولا را به موقعیت قهرمان فاز قبلی ببد(برای یکی از کارتها
-    // تابعی که هیولا های خواشته شده را به تعداد گفته شده در کارت جابجا کند
-    // تابعی که ایتم ها را در مکان درست بزارد
-    bag_items::put_Itme_IN_Place(items_num); // تابعی که محلی های گفته شده را سرجایشان بزارد
+    bag_items::put_Itme_IN_Place(items_num);
 
     if (event_bio_id == 1)
     {
@@ -100,11 +97,17 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f=Invisible_man::invisible_man_strike();
+                    if(f){
+                        trrorlevel++;
+                    }
                 } // done
                 if (a == "Deracula")
                 {
-                    Deracula::Deracula_strike();
+                    bool f= Deracula::Deracula_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -145,7 +148,10 @@ void monster_card::play_monster_card()
                 if (a == "Deracula")
                 {
                     Deracula::Deracula_special_power();
-                    Deracula::Deracula_strike();
+                    bool f= Deracula::Deracula_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -153,11 +159,17 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
                 if (a == "Deracula")
                 {
-                    Deracula::Deracula_strike();
+                    bool f= Deracula::Deracula_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -165,14 +177,20 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
                     Deracula::Deracula_special_power();
-                    Deracula::Deracula_strike();
+                    bool f= Deracula::Deracula_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -184,7 +202,10 @@ void monster_card::play_monster_card()
                 } // done
                 if (a == "Deracula")
                 {
-                    Deracula::Deracula_strike();
+                   bool f= Deracula::Deracula_strike();
+                        if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
         }
@@ -242,14 +263,20 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
                     Deracula::Deracula_special_power();
-                    Deracula::Deracula_strike();
+                    bool f= Deracula::Deracula_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -257,14 +284,20 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
                     Deracula::Deracula_special_power();
-                    Deracula::Deracula_strike();
+                   bool f= Deracula::Deracula_strike();
+                        if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -272,11 +305,17 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
                 if (a == "Deracula")
                 {
-                    Deracula::Deracula_strike();
+                    bool f =Deracula::Deracula_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -336,14 +375,20 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
                     Deracula::Deracula_special_power();
-                    Deracula::Deracula_strike();
+                    bool f= Deracula::Deracula_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -351,14 +396,20 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
                     Deracula::Deracula_special_power();
-                    Deracula::Deracula_strike();
+                   bool f= Deracula::Deracula_strike();
+                        if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -366,14 +417,20 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
                     Deracula::Deracula_special_power();
-                    Deracula::Deracula_strike();
+                   bool f= Deracula::Deracula_strike();
+                        if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
 
@@ -381,14 +438,20 @@ void monster_card::play_monster_card()
             {
                 if (a == "invisible man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    bool f= Invisible_man::invisible_man_strike();
+                         if(f){
+                        trrorlevel++;
+                    }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
                     Deracula::Deracula_special_power();
-                    Deracula::Deracula_strike();
+                   bool f= Deracula::Deracula_strike();
+                        if(f){
+                        trrorlevel++;
+                    }
                 } // done
             }
         }
@@ -559,21 +622,21 @@ the_Ichthyologist::the_Ichthyologist()
     strike_arrange = {};
 }
 //=====================================================================================================//
-monster_card *draw_random_card(std::vector<monster_card *> &deck)
+monster_card * bag_of_monster_card::draw_random_card()
 {
-    if (deck.empty())
+    if (monster_card_bag.empty())
     {
         return nullptr; // یا throw std::runtime_error("Deck is empty");
     }
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, deck.size() - 1);
+    std::uniform_int_distribution<> dist(0, monster_card_bag.size() - 1);
 
     int index = dist(gen);
-    monster_card *selected = deck[index];
+    monster_card *selected = monster_card_bag[index];
 
-    deck.erase(deck.begin() + index); // حذف کارت از دسته
+    monster_card_bag.erase(monster_card_bag.begin() + index); // حذف کارت از دسته
 
     return selected; // برگردوندن کارت انتخاب‌شده
 }

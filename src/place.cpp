@@ -17,6 +17,99 @@ place::place(string n) : name(n)
     {
         tabot = true;
     }
+    if(n=="cave"){
+        near_place.push_back("camp");
+    }
+    if(n=="camp"){
+        near_place.push_back("cave");
+        near_place.push_back("precinct");
+        near_place.push_back("mansion");
+        near_place.push_back("theatre");
+        near_place.push_back("inn");
+    }
+    if(n=="precinct"){
+        near_place.push_back("camp");
+        near_place.push_back("inn");
+        near_place.push_back("theatre");
+        near_place.push_back("mansion");
+    }
+    if(n=="inn"){
+        near_place.push_back("precinct");
+        near_place.push_back("camp");
+        near_place.push_back("theatre");
+        near_place.push_back("mansion");
+    }
+    if(n=="barn"){
+        near_place.push_back("theatre");
+    }
+    if(n=="dungion"){
+        near_place.push_back("tower");
+    }
+    if(n=="theatre"){
+        near_place.push_back("inn");
+        near_place.push_back("precinct");
+        near_place.push_back("camp");
+        near_place.push_back("mansion");
+        near_place.push_back("tower");
+        near_place.push_back("shop");
+    }
+    if(n=="tower"){
+        near_place.push_back("theatre");
+        near_place.push_back("docks");
+        near_place.push_back("dungion");
+    }
+    if(n=="mansion"){
+        near_place.push_back("abbey");
+        near_place.push_back("camp");
+        near_place.push_back("precinct");
+        near_place.push_back("inn");
+        near_place.push_back("theatre");
+        near_place.push_back("shop");
+        near_place.push_back("mansion");
+        near_place.push_back("church");
+    }
+    if(n=="docks"){
+        near_place.push_back("tower");
+    }
+    if(n=="abbey"){
+        near_place.push_back("mansion");
+        near_place.push_back("crypt");
+    }
+    if(n=="shop"){
+        near_place.push_back("theatre");
+        near_place.push_back("mansion");
+        near_place.push_back("musium");
+        near_place.push_back("church");
+        near_place.push_back("laboratory");
+    }
+    if(n=="crypt"){
+        near_place.push_back("abbey");
+    }
+    if(n=="musium"){
+        near_place.push_back("mansion");
+        near_place.push_back("shop");
+        near_place.push_back("church");
+    }
+    if(n=="charch"){
+        near_place.push_back("mansion");
+        near_place.push_back("musium");
+        near_place.push_back("hospital");
+        near_place.push_back("graveyard");
+        near_place.push_back("shop");
+    }
+    if(n=="laboratory"){
+        near_place.push_back("shop");
+        near_place.push_back( "institute");
+    }
+    if(n=="hospital"){
+        near_place.push_back("church");
+    }
+    if(n=="graveyard"){
+        near_place.push_back("church");
+    }
+    if(n=="institute"){
+        near_place.push_back("laboratory");
+    }
 }
 
 place::~place() {}
@@ -51,91 +144,55 @@ void place::put_in_place(Monster *m, bool f = false)
         throw runtime_error("monster was in place ");
         return;
     }
-    if (f)
-    {
-        moving::get_place(m->get_monster_place()).delete_monster(m);
+    moving::get_place(m->get_monster_place()).delete_monster(m);
+    monster_in_place.push_back(m);
+    m->set_location(this->name);
 
-        monster_in_place.push_back(m);
-        m->set_location(this->name);
-    }
-    if (m->m_name == "invisible_man")
-    {
-        if (villager_in_place.empty())
-        {
-            throw runtime_error("this place was not good");
-        }
-        moving::get_place(m->get_monster_place()).delete_monster(m);
-
-        monster_in_place.push_back(m);
-        m->set_location(this->name);
-        return;
-    }
-    if (m->m_name == "deracula")
-    {
-        if (hero_in_place.empty())
-        {
-            throw runtime_error("this place was not good");
-        }
-        moving::get_place(m->get_monster_place()).delete_monster(m);
-        monster_in_place.push_back(m);
-        m->set_location(this->name);
-        return;
-    }
 }
 //========================================================================================================================//
 void place::put_in_place(Hero *h)
 {
-
-    for (auto &her : hero_in_place)
+    if (hero_in_place.size() == 2)
     {
-        if (h != her)
-        {
-            moving::get_place(h->get_hero_place()).delete_hero(h);
-            hero_in_place.push_back(h);
-            h->set_location(this->name);
-            return;
-        }
+        throw runtime_error("monster was in place ");
+        return;
     }
-    throw runtime_error("hero was in place ");
+    if (hero_in_place.size() == 1 && hero_in_place.back() == h)
+    {
+        throw runtime_error("monster was in place ");
+        return;
+    }
+    moving::get_place(h->get_hero_place()).delete_hero(h);
+    hero_in_place.push_back(h);
+    h->set_location(this->name);
 }
 //========================================================================================================================//
 
 void place::go_to_near_place(Monster *monsters)
 {
-    bool succsesful = false;
-    do
-    {
         try
         {
             put_in_place(monsters);
-            succsesful = true;
-            break;
         }
         catch (runtime_error &e)
         {
+            cerr<<e.what()<<endl;
         }
-    } while (!succsesful);
 }
 //========================================================================================================================//
 void place::go_to_near_place(Hero *hero)
 {
-    bool succsesful = false;
-    do
-    {
+
         try
         {
             put_in_place(hero);
-
-
             cout << " new location of " << hero->name << " is : " << this->name << endl;
-            succsesful = true;
-            break;
         }
         catch (runtime_error &e)
         {
             cout << e.what() << endl;
         }
-    } while (!succsesful);
+
 }
 //========================================================================================================================//
 void place::show_near_place()
@@ -143,7 +200,7 @@ void place::show_near_place()
     for (const auto &p : near_place)
     {
         cout << "your near place is : \n";
-        cout << p.name << "\t";
+        cout << p << "\t";
     }
 }
 //========================================================================================================================//
@@ -171,10 +228,10 @@ void place::put_villager_in_place(Hero *h, place &p, std::string place_name = ""
     if (place_name != "")
     {
         // گذاشتن محلی در خانه قهرمان
-        Villager &v = near_place.back().villager_in_place.back();
+        Villager &v = moving::get_place( near_place.back()).villager_in_place.back();
         p.villager_in_place.push_back(v);
         v.set_place(p.name);
-        near_place.back().villager_in_place.pop_back();
+        moving::get_place( near_place.back()).villager_in_place.pop_back();
         if (p.villager_in_place.back().is_safe_place())
         {
             h->increase_perk_card(bag_perks::get_one_perk_card());
@@ -186,10 +243,10 @@ void place::put_villager_in_place(Hero *h, place &p, std::string place_name = ""
         Villager &v = p.villager_in_place.back();
         for (auto &pl : p.near_place)
         {
-            if (pl.name == v.name_of_safe_place())
+            if (pl == v.name_of_safe_place())
             {
-                pl.villager_in_place.push_back(v);
-                v.set_place(pl.name);
+                moving::get_place(pl).villager_in_place.push_back(v);
+                v.set_place(pl);
                 h->increase_perk_card(bag_perks::get_one_perk_card());
                 return;
             }
@@ -218,6 +275,7 @@ vector<item> place::get_items(int a)
     for (int i = 0; i < a; ++i)
     {
         temp.push_back(items_list.back());
+        bag_items::icraese_item_out_the_game(items_list.back());
         items_list.pop_back(); // باید برود در وکتور خارج از بازی
     }
     return temp;
@@ -286,7 +344,7 @@ void place::kill_monster(int a)
     }
 }
 //========================================================================================================================//
-std::vector<place> place::get_p()
+vector<string> place::get_p()
 {
     return near_place;
 }
@@ -306,6 +364,18 @@ void place::put_vilager(Villager v)
     villager_in_place.push_back(v);
     v.set_place(this->name);
 }
+//======================================================================
+vector<string> place::show_villager_monster(){
+    vector<string> temp;
+    for(auto const & v :villager_in_place ){
+        temp.push_back(v.name);
+    }
+    for(auto & const m : monster_in_place){
+        temp.push_back(m->m_name);
+    }
+    return temp;
+}
+
 //**************************************************************************//
 string place::has_villager()
 {
@@ -315,18 +385,18 @@ string place::has_villager()
     }
     for (const auto &p : near_place)
     {
-        if (!p.villager_in_place.empty())
+        if (!moving::get_place(p).villager_in_place.empty())
         {
-            return p.name;
+            return p;
         }
     }
     for (const auto &p : near_place)
     {
-        for (const auto &a : p.near_place)
+        for (const auto &a : moving::get_place(p).near_place)
         {
-            if (!a.near_place.empty())
+            if (!moving::get_place(a).near_place.empty())
             {
-                return a.name;
+                return a;
             }
         }
     }

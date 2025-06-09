@@ -11,7 +11,7 @@ class moving
 {
     
 private:
-    static std::map<std::string, place> places;
+    static std::map<std::string, place>& places;
     static Hero *first_hero;
     static Hero *seccend_hero;
     static Hero* last;

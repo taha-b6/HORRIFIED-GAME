@@ -16,16 +16,14 @@ public:
     Dice D_S = Special_power;
     Dice D_S = Attack;
     std::string name;
-    monster_card();
-    virtual ~monster_card();
-    virtual void play_monster_card();
+    monster_card(){}
+    virtual ~monster_card(){}
+    virtual void play_monster_card(int&);
     Dice play_dice();
     std::string card_name;
     std::string event_name;
     virtual void show_event();
     virtual void show_item_num(); 
-    virtual void do_strike();
-    virtual void do_event();
     virtual void show_monster_card();
 protected:
     int event_bio_id;
@@ -44,7 +42,6 @@ public:
                                        //متدی میخوام که دراکولا از مکان فعلی به ماکان یک قهرمان مشخص ببرد
     form_of_the_bat();
     virtual ~ form_of_the_bat();
-    void play_monster_card()override;
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/
@@ -60,7 +57,6 @@ private:
 public:
     sunrise();
     virtual ~sunrise();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/   
@@ -77,7 +73,6 @@ private:
 public:
     thief();
     virtual ~thief();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -92,7 +87,6 @@ private:
 public:
     the_delivery();
     virtual ~the_delivery();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -107,7 +101,6 @@ private:
 public:
     fortune_teller();
     virtual ~fortune_teller();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/  
@@ -122,7 +115,6 @@ private:
 public:
     former_employer();
     virtual ~former_employer();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -137,7 +129,6 @@ private:
 public:
     hurried_assistant();
     virtual ~hurried_assistant();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -152,7 +143,6 @@ private:
 public:
     the_inocent();
     virtual ~the_inocent();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -167,7 +157,6 @@ private:
 public:
     egyptian_expert();
     virtual ~egyptian_expert();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -182,7 +171,6 @@ private:
 public:
     the_Ichthyologist();
     virtual ~ the_Ichthyologist();
-    void play_monster_card();
     void show_event()override;
     /*void do_strike()override;
     void do_event()override;*/ 
@@ -213,7 +201,7 @@ the_Ichthyologist ich;
 
 std::vector<monster_card*> monster_card_bag{&form_bat1 , &form_bat2 , &form_bat3 ,&sun1 ,&sun2 ,&sun3 , &thief1 ,&thief2 ,&thief3 ,&thief4 ,&thief5 ,&deliver ,&tell ,&former ,&assist ,&inocent ,&expert ,&ich};
 public:
-monster_card* draw_random_card(std::vector<monster_card*>& deck); // بعد از استفاده از این تابع متد نشون دادن کارت رو که در کلاس های کارت هیولا نوشتم فراخوانی کن
+monster_card* draw_random_card(); // بعد از استفاده از این تابع متد نشون دادن کارت رو که در کلاس های کارت هیولا نوشتم فراخوانی کن
 
 
 

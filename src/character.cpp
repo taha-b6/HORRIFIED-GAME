@@ -133,6 +133,14 @@ string to_string(Place p)
         return "graveyard";
     case hospital:
         return "hospital";
+        case abbey:
+        return "abbey";
+        case church:
+        return "church";
+        case musium:
+        return "musium";
+        case shop:
+        return "shop";
     default:
         return "Unknown Place";
     }
@@ -166,7 +174,7 @@ void Hero::get_one_item()
     if (items.size() > 0)
     {
         item temp = items.back();
-        // باید ایتم رفته به سبد برگردد
+        bag_items::icraese_item_out_the_game(temp);
         items.pop_back();
     }
     else
@@ -273,6 +281,8 @@ bool Hero::can_distroy(int power, string color)
     }
     if (p >= power)
     { // tempباید به کیسه اضافهشود
+        for(auto & i :temp){
+        bag_items::icraese_item_out_the_game(* i);}
         items.erase(std::remove_if(items.begin(), items.end(),
                                    [&temp](const item &i)
                                    {
@@ -315,7 +325,7 @@ int Hero::do_action()
                 cout << "Please enter the place which you like to go (0 to 14):\n";
                 cin >> a;
 
-                if (a >= 0 && a <= 14)
+                if (a >= 0 && a <= 17)
                 {
 
                     string name_place = to_string(a);
