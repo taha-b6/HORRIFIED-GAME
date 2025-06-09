@@ -6,11 +6,11 @@
 #include "character.hpp"
 #include <map>
 
-//***********************************************************************************************************************//
+//========================================================================================================================//
 
 using namespace std;
-
-void do_perk(Hero *h)
+//========================================================================================================================//
+void do_perk(Hero *h ,bool & f)
 {
     int a;
     while (1)
@@ -21,38 +21,38 @@ void do_perk(Hero *h)
         case 1:
         {
             visit_from_the_detective *v = dynamic_cast<visit_from_the_detective *>(p);
-            v->play_perk(moving::get_invisble_man());
+            v->play_perk(moving::get_invisible_man() ,f);
             break;
         }
         case 2:
         {
             break_of_dawn *b = dynamic_cast<break_of_dawn *>(p);
-            b->play_perk();
+            b->play_perk(f);
             // فاز هیولا را رد کن
             break;
         }
         case 3:
         {
             overstock *o = dynamic_cast<overstock *>(p);
-            o->play_perk();
+            o->play_perk(f);
             break;
         }
         case 4:
         {
             late_into_the_night *l = dynamic_cast<late_into_the_night *>(p);
-            l->play_perk(h);
+            l->play_perk(h , f);
             break;
         }
         case 5:
         {
             repel *r = dynamic_cast<repel *>(p);
-            r->play_perk(moving::get_deracola(), moving::get_invisble_man());
+            r->play_perk(moving::get_deracula(), moving::get_invisible_man() , f);
             break;
         }
         case 6:
         {
             hurry *h = dynamic_cast<hurry *>(p);
-            h->play_perk(moving::get_first_hero(), moving::get_seccend_hero());
+            h->play_perk(moving::get_first_hero(), moving::get_seccend_hero() , f);
             break;
         }
         default:
@@ -66,7 +66,7 @@ void do_perk(Hero *h)
         }
     }
 }
-
+//========================================================================================================================//
 int which_perk_card(perk_card *c)
 {
     if (dynamic_cast<visit_from_the_detective *>(c))
@@ -98,7 +98,7 @@ int which_perk_card(perk_card *c)
         return 0;
     }
 }
-
+//========================================================================================================================//
 string to_string(Place p)
 {
     switch (p)
@@ -133,39 +133,63 @@ string to_string(Place p)
         return "graveyard";
     case hospital:
         return "hospital";
+        case abbey:
+        return "abbey";
+        case church:
+        return "church";
+        case musium:
+        return "musium";
+        case shop:
+        return "shop";
     default:
         return "Unknown Place";
     }
 }
 
-//=================================================     ================================================================//
-string Monster::get_place()
+//========================================================================================================================//
+string Monster::get_monster_place()
 {
     return wher_is_monster;
 }
-//***************************************************************************//
+//========================================================================================================================//
 Hero::Hero() {}
-//********************************************************************************************************//
+//========================================================================================================================//
 void Hero::set_location(string place_name)
 {
     wher_is_hero = place_name;
 }
-//============================================       ======================================================//
+//========================================================================================================================//
 void Monster::set_location(string place_name)
 {
     wher_is_monster = place_name;
 }
+//========================================================================================================================//
 void Hero::increase_action(int new_action)
 {
     action += new_action;
 }
-//==========================================       ==================================================================//
+//=================================================================
+void Hero::get_one_item()
+{
+    if (items.size() > 0)
+    {
+        item temp = items.back();
+        bag_items::icraese_item_out_the_game(temp);
+        items.pop_back();
+    }
+    else
+    {
+        throw runtime_error("you dont havr enogh item");
+    }
+}
 
-string Hero::get_place()
+//========================================================================================================================//
+
+string Hero::get_hero_place()
 {
     return wher_is_hero;
 }
-//============================================       =======================================================//
+//========================================================================================================================//
 void Hero::increase_perk_card(perk_card *new_perk)
 {
     for (auto &card : perk_cards)
@@ -185,7 +209,7 @@ void Hero::increase_perk_card(perk_card *new_perk)
     perk_cards.push_back(new_perk);
 }
 
-//************************************************************//void Hero::domp_perk(perk_card *domp)
+//========================================================================================================================//void Hero::domp_perk(perk_card *domp)
 void Hero::domp_perk(perk_card *domp)
 {
     for (auto it = perk_cards.begin(); it != perk_cards.end(); ++it)
@@ -209,7 +233,7 @@ void Hero::domp_perk(perk_card *domp)
     }
 }
 
-//***********************************************************************************//
+//========================================================================================================================//
 Hero::Hero(const Hero &h)
 {
     this->name = h.name;
@@ -218,23 +242,23 @@ Hero::Hero(const Hero &h)
         this->perk_cards.push_back(p);
     }
 }
-//***************************************************************************//
+//========================================================================================================================//
 Archaeologist::Archaeologist(std::string place_name)
 {
     wher_is_hero = place_name;
     name = "Archaeologist";
 }
-//*************************************************************************//
+//========================================================================================================================//
 void Archaeologist::set_action()
 {
     action = 4;
 }
-//**********************************************************************************//
+//========================================================================================================================//
 void Mayor::set_action()
 {
     action = 5;
 }
-//******************************************************************//
+//========================================================================================================================//
 bool Hero::can_distroy(int power, string color)
 {
     bool can = false;
@@ -256,7 +280,9 @@ bool Hero::can_distroy(int power, string color)
         }
     }
     if (p >= power)
-    {
+    { // tempباید به کیسه اضافهشود
+        for(auto & i :temp){
+        bag_items::icraese_item_out_the_game(* i);}
         items.erase(std::remove_if(items.begin(), items.end(),
                                    [&temp](const item &i)
                                    {
@@ -269,9 +295,9 @@ bool Hero::can_distroy(int power, string color)
 
     return can;
 }
-//*************************************************************//
+//========================================================================================================================//
 
-int Hero::do_action()
+int Hero::do_action(bool & f)
 {
     int b = 0;
     static int how_many_item = 0;
@@ -299,7 +325,7 @@ int Hero::do_action()
                 cout << "Please enter the place which you like to go (0 to 14):\n";
                 cin >> a;
 
-                if (a >= 0 && a <= 14)
+                if (a >= 0 && a <= 17)
                 {
 
                     string name_place = to_string(a);
@@ -347,17 +373,24 @@ int Hero::do_action()
             cin >> a;
             if (a >= 0)
             {
-                temp = p.get_items(a);
-                for (const auto &i : temp)
+                try
                 {
-                    if (wher_is_hero == "inn" || wher_is_hero == "mansiom" || wher_is_hero == "barn" || wher_is_hero == "laboratory" || wher_is_hero == "institute")
+                    temp = p.get_items(a);
+                    for (const auto &i : temp)
                     {
-                        items_for_distroy_invisble_man.push_back(i);
+                        if (wher_is_hero == "inn" || wher_is_hero == "mansiom" || wher_is_hero == "barn" || wher_is_hero == "laboratory" || wher_is_hero == "institute")
+                        {
+                            items_for_distroy_invisble_man.push_back(i);
+                        }
+                        else
+                        {
+                            items.push_back(i);
+                        }
                     }
-                    else
-                    {
-                        items.push_back(i);
-                    }
+                }
+                catch (invalid_argument &e)
+                {
+                    cout << e.what() << endl;
                 }
             }
             else
@@ -401,7 +434,7 @@ int Hero::do_action()
             {
             case 1:
             {
-                cout << "here has invisble_man and deracola for kill the invisble man enter 2 and for deracola enter 3\n";
+                cout << "here has invisble_man and deracula for kill the invisble man enter 2 and for deracula enter 3\n";
                 cin >> a;
                 if (a == 2)
                 {
@@ -427,7 +460,7 @@ int Hero::do_action()
                     if (can_distroy(6, "yellow"))
                     {
                         p.kill_monster(2);
-                        moving::kill_deracola();
+                        moving::kill_deracula();
                     }
                     else
                     {
@@ -460,7 +493,7 @@ int Hero::do_action()
                 if (can_distroy(6, "yellow"))
                 {
                     p.kill_monster(2);
-                    moving::kill_deracola();
+                    moving::kill_deracula();
                 }
                 else
                 {
@@ -482,11 +515,11 @@ int Hero::do_action()
     }
     return b;
 }
-//**********************************************************************//
-int Archaeologist::do_action()
+//========================================================================================================================//
+int Archaeologist::do_action(bool & f)
 {
     this->set_action();
-    int b = Hero::do_action();
+    int b = Hero::do_action(f);
     if (b < 4)
     {
         place &pl = moving::get_near_place(wher_is_hero);
@@ -496,17 +529,24 @@ int Archaeologist::do_action()
         cin >> a;
         if (a >= 0)
         {
-            temp = pl.get_items(a);
-            for (const auto &i : temp)
+            try
             {
-                if (wher_is_hero == "inn" || wher_is_hero == "mansiom" || wher_is_hero == "barn" || wher_is_hero == "laboratory" || wher_is_hero == "institute")
+                temp = pl.get_items(a);
+                for (const auto &i : temp)
                 {
-                    items_for_distroy_invisble_man.push_back(i);
+                    if (wher_is_hero == "inn" || wher_is_hero == "mansiom" || wher_is_hero == "barn" || wher_is_hero == "laboratory" || wher_is_hero == "institute")
+                    {
+                        items_for_distroy_invisble_man.push_back(i);
+                    }
+                    else
+                    {
+                        items.push_back(i);
+                    }
                 }
-                else
-                {
-                    items.push_back(i);
-                }
+            }
+            catch (invalid_argument &e)
+            {
+                cout << e.what() << endl;
             }
         }
         else
@@ -523,38 +563,38 @@ int Archaeologist::do_action()
     cin >> a;
     if (a == 1)
     {
-        do_perk(this);
+        do_perk(this ,f);
     }
     return 0;
 }
-//********************************************************************//
-int Mayor::do_action()
+//========================================================================================================================//
+int Mayor::do_action( bool & f)
 {
 
     this->set_action();
-    Hero::do_action();
+    Hero::do_action(f);
     cout << "do you like play perk enter one\n";
     int a;
     cin >> a;
     if (a == 1)
     {
-        do_perk(this);
+        do_perk(this , f);
     }
     return 0;
 }
 
-//*********************************************************//
+//========================================================================================================================//
 Villager::Villager(std::string villger_name, std::string safe_place)
 {
     name = villger_name;
     this->safe_place = safe_place;
 }
-//***************************************************************************//
+//========================================================================================================================//
 void Villager::set_place(std::string p)
 {
     name_of_place = p;
 }
-//***********************************************************************************//
+//========================================================================================================================//
 bool Villager::is_safe_place()
 {
     if (name_of_place == safe_place)
@@ -564,5 +604,58 @@ bool Villager::is_safe_place()
     else
     {
         return false;
+    }
+}
+//=====================================================================================
+void Invisible_man::invisible_man_special_power()
+{
+    moving::special_power_invi();
+}
+//============================================================================
+bool Invisible_man::invisible_man_strike()
+{
+    if (moving::get_place(wher_is_monster).can_invisible_man())
+    {
+        return true;
+        // فاز هیولا رد شود
+    }
+}
+//================================================================================]
+void Deracula::Deracula_special_power()
+{
+    moving::special_power_der();
+}
+//================================================================================
+
+bool Deracula::Deracula_strike()
+{
+    if (moving::get_place(wher_is_monster).can_deracola())
+    {
+        cout << moving::get_place(wher_is_monster).get_hero_in_place()->name << "is in dangur";
+        cout << moving::get_place(wher_is_monster).get_hero_in_place()->name << "do you like get one item enter one if you like go to hospital enter 2 \n";
+        int a;
+        cin >> a;
+        if (a == 1)
+        {
+            try
+            {
+                moving::get_place(wher_is_monster).get_hero_in_place()->get_one_item();
+            }
+            catch (runtime_error &e)
+            {
+                cout << e.what() << endl;
+                moving::set_new_location(moving::get_place(wher_is_monster).get_hero_in_place(), "hospital", true);
+            }
+        }
+        if (a != 1)
+        {
+            moving::set_new_location(moving::get_place(wher_is_monster).get_hero_in_place(), "hospital", true);
+        }
+    }
+}
+//===============================================================================
+Hero::~Hero(){
+    for(auto & p : perk_cards){
+        delete p;
     }
 }
