@@ -52,6 +52,7 @@ public:
     static std::string get_place_whit_max_item();
     static void special_power_invi();
     static void special_power_der();
+    static bool hero_won();
     
 };
 //========================================================================================================================//

@@ -6,12 +6,7 @@
 #include "character.hpp"
 //=====================================================================================================//
 using namespace std;
-//======================================= constructor=======================================================//
-void monster_card::show_event()
-{
-    cout << "The monster card event is :" << endl;
-    cout << event_bio << endl;
-}
+
 //=====================================================================================================//
 void monster_card::play_monster_card(int& trrorlevel)
 {
@@ -498,11 +493,7 @@ void monster_card::show_monster_card()
         cout << a << "--->" << strike_move << "move" << "--->" << strike_dice_num << "Dice" << endl;
     }
 }
-//=====================================================================================================//
-void monster_card::show_item_num()
-{
-    cout << "The number of items entering the game :" << items_num << endl;
-}
+
 //======================================= constructor=======================================================//
 form_of_the_bat::form_of_the_bat()
 {
@@ -640,3 +631,12 @@ monster_card * bag_of_monster_card::draw_random_card()
 
     return selected; // برگردوندن کارت انتخاب‌شده
 }
+//==============================================================================
+ bool bag_of_monster_card::moster_cards_is_end(){
+    if(monster_card_bag.empty()){
+        return true;
+    }
+    return false;
+}
+//==================================================================================
+

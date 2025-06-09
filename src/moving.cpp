@@ -317,3 +317,12 @@ void moving::special_power_der()
 {
     places[deracula->get_monster_place()].put_hero(last);
 }
+//===============================================================================
+bool moving::hero_won(){
+    bool f;
+    for(auto & p : places){
+        f=p.second.each_monster_kiil();
+    }
+    return f;
+}
+

@@ -10,7 +10,7 @@
 
 using namespace std;
 //========================================================================================================================//
-void do_perk(Hero *h)
+void do_perk(Hero *h ,bool & f)
 {
     int a;
     while (1)
@@ -21,38 +21,38 @@ void do_perk(Hero *h)
         case 1:
         {
             visit_from_the_detective *v = dynamic_cast<visit_from_the_detective *>(p);
-            v->play_perk(moving::get_invisible_man());
+            v->play_perk(moving::get_invisible_man() ,f);
             break;
         }
         case 2:
         {
             break_of_dawn *b = dynamic_cast<break_of_dawn *>(p);
-            b->play_perk();
+            b->play_perk(f);
             // فاز هیولا را رد کن
             break;
         }
         case 3:
         {
             overstock *o = dynamic_cast<overstock *>(p);
-            o->play_perk();
+            o->play_perk(f);
             break;
         }
         case 4:
         {
             late_into_the_night *l = dynamic_cast<late_into_the_night *>(p);
-            l->play_perk(h);
+            l->play_perk(h , f);
             break;
         }
         case 5:
         {
             repel *r = dynamic_cast<repel *>(p);
-            r->play_perk(moving::get_deracula(), moving::get_invisible_man());
+            r->play_perk(moving::get_deracula(), moving::get_invisible_man() , f);
             break;
         }
         case 6:
         {
             hurry *h = dynamic_cast<hurry *>(p);
-            h->play_perk(moving::get_first_hero(), moving::get_seccend_hero());
+            h->play_perk(moving::get_first_hero(), moving::get_seccend_hero() , f);
             break;
         }
         default:
@@ -297,7 +297,7 @@ bool Hero::can_distroy(int power, string color)
 }
 //========================================================================================================================//
 
-int Hero::do_action()
+int Hero::do_action(bool & f)
 {
     int b = 0;
     static int how_many_item = 0;
@@ -516,10 +516,10 @@ int Hero::do_action()
     return b;
 }
 //========================================================================================================================//
-int Archaeologist::do_action()
+int Archaeologist::do_action(bool & f)
 {
     this->set_action();
-    int b = Hero::do_action();
+    int b = Hero::do_action(f);
     if (b < 4)
     {
         place &pl = moving::get_near_place(wher_is_hero);
@@ -563,22 +563,22 @@ int Archaeologist::do_action()
     cin >> a;
     if (a == 1)
     {
-        do_perk(this);
+        do_perk(this ,f);
     }
     return 0;
 }
 //========================================================================================================================//
-int Mayor::do_action()
+int Mayor::do_action( bool & f)
 {
 
     this->set_action();
-    Hero::do_action();
+    Hero::do_action(f);
     cout << "do you like play perk enter one\n";
     int a;
     cin >> a;
     if (a == 1)
     {
-        do_perk(this);
+        do_perk(this , f);
     }
     return 0;
 }
@@ -651,5 +651,11 @@ bool Deracula::Deracula_strike()
         {
             moving::set_new_location(moving::get_place(wher_is_monster).get_hero_in_place(), "hospital", true);
         }
+    }
+}
+//===============================================================================
+Hero::~Hero(){
+    for(auto & p : perk_cards){
+        delete p;
     }
 }

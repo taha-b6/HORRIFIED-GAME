@@ -321,7 +321,9 @@ void place::kill_monster(int a)
         {
             if (dynamic_cast<Invisible_man *>(*it))
             {
-                monster_in_place.erase(it);
+                delete * it;
+
+                it= monster_in_place.erase(it);
                 std::cout << "Invisible man removed from place.\n";
                 found = true;
                 break;
@@ -331,7 +333,8 @@ void place::kill_monster(int a)
         {
             if (dynamic_cast<Deracula *>(*it))
             {
-                monster_in_place.erase(it);
+                delete * it;
+                 it=monster_in_place.erase(it);
                 std::cout << "Deracula removed from place.\n";
                 found = true;
                 break;
@@ -431,5 +434,20 @@ bool place::can_deracola(){
  Hero* place::get_hero_in_place(){
     return hero_in_place.back();
 }
-
+//===================================================
+bool place::each_monster_kiil(){
+    if(monster_in_place.size()==0){
+        return true;
+    }
+    return false;
+}
+//======================================================================================
+place:: ~place(){
+    for(auto & h : hero_in_place ){
+        delete h;
+    }
+    for(auto & m : monster_in_place){
+        delete m;
+    }
+}
 

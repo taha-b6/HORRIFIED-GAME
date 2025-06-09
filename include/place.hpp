@@ -58,8 +58,9 @@ public:
     bool can_deracola();
     std::vector<std::string> show_villager_monster();
      Hero* get_hero_in_place();
+     bool each_monster_kiil();
+     ~place();
 
-    ~place();
 };
 //========================================================================================================================//
 #endif

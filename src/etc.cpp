@@ -5,6 +5,8 @@ void gameboard_operation(){
     int terror_level=0;
     Hero* first = nullptr;
     Hero* seccend = nullptr;
+    bag_items bag_item;
+    bag_of_monster_card bag_monster;
     cout<<"When did you eat garlic enter two intiger\n";
     int a;
     int b;
@@ -52,12 +54,38 @@ void gameboard_operation(){
     {"graveyrd",graveyard},{"institute",institute}};
 
     moving mov(first ,seccend , deracula , invisble_man );
-
+    bool next_faz=false;
     while(1){
-        first->do_action();
+        //نمایش ترمینال
+        if(terror_level==5){
+            cout<<"the heros lost beacuse terror level is 5\n";
+            exit(0);
+        }
+        if(bag_monster.moster_cards_is_end()){
+            cout<<"the heros lost becouse monster cards is end\n";
+            exit(0);
+        }
+        if(mov.hero_won()){
+            cout<<"hero won\n";
+            exit(0);
+        }
 
+        first->do_action(next_faz);
+        mov.set_last_hero(first);
+        if(!next_faz){
+            monster_card* m = bag_monster.draw_random_card();
+            cout<<"monster card card is :\n";
+            m->show_monster_card();
+            m->play_monster_card( terror_level);
+        }
+        seccend->do_action(next_faz);
+        mov.set_last_hero(seccend);
+        if(!next_faz){
+            monster_card* m = bag_monster.draw_random_card();
+            cout<<"monster card card is :\n";
+            m->show_monster_card();
+            m->play_monster_card( terror_level);
+        }
     }
-
-
-
 }
+

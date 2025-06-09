@@ -162,7 +162,7 @@ int item::get_power() const{
     return power;
 }
 //========================================================================================================================//
-void visit_from_the_detective::play_perk(Monster *monster){
+void visit_from_the_detective::play_perk(Monster *monster , bool&){
     std::string name;
     bool success = false;
 
@@ -186,26 +186,27 @@ void visit_from_the_detective::play_perk(Monster *monster){
 
 //========================================================================================================================//
 
-void repel::play_perk(Monster *deracula, Monster *inviseble_man){ // برای حرکت دادن هیولا ها دو خانه
+void repel::play_perk(Monster *deracula, Monster *inviseble_man , bool& f){ // برای حرکت دادن هیولا ها دو خانه
     moving::set_new_location();
 }
 //========================================================================================================================//
-void break_of_dawn::play_perk(){
+void break_of_dawn::play_perk(bool&  f){
+    f=true;
     bag_items::put_Itme_IN_Place(2);
 }
 //========================================================================================================================//
 
-void overstock::play_perk(){
+void overstock::play_perk(bool& f){
     bag_items::put_Itme_IN_Place(2);
 }
 
 //========================================================================================================================//
 
-void late_into_the_night::play_perk(Hero *hero){
+void late_into_the_night::play_perk(Hero *hero , bool&f){
     hero->increase_action(2);
 }
 //========================================================================================================================//
-void hurry::play_perk(Hero *archaeologist, Hero *mayor){
+void hurry::play_perk(Hero *archaeologist, Hero *mayor , bool&f){
     // برای حرکت دادن هر دو قهرمان دو حانه
     moving::set_new_location(1);
 }

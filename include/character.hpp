@@ -1,5 +1,5 @@
-#ifndef CHARACTER - HPP
-#define CHARACTER -HPP
+#ifndef CHARACTER_HPP
+#define CHARACTER_HPP
 //========================================================================================================================//
 #include <iostream>
 #include <vector>
@@ -30,7 +30,7 @@ public:
     std::string m_name;
 
     std::string  get_monster_place();
-    virtual ~Monster();
+    virtual ~Monster(){}
     
     void set_location(std::string); // اسم مکانی که او قرار دارد ست میشود
     // پیاده سازی کلاس
@@ -92,14 +92,14 @@ public:
 
 //========================================================================================================================//
 class Hero{
-    friend void do_perk(Hero*);
+    friend void do_perk(Hero* , bool&);
 public:
     std::string name;
 
     Hero(const Hero &);
     Hero();
     void set_location(std::string);
-    virtual int do_action();  // do actions
+    virtual int do_action( bool &);  // do actions
     virtual void set_action() = 0; // reset the action
     void increase_action(int);
     void increase_perk_card(perk_card *);
@@ -107,7 +107,7 @@ public:
     std::string get_hero_place();
     bool can_distroy(int , std::string);
     void get_one_item();
-
+    virtual ~Hero();
 protected:
     std::string wher_is_hero;
     std::vector<perk_card *> perk_cards;
@@ -122,7 +122,7 @@ class Archaeologist : public Hero{
 public:
     using Hero::Hero;
     Archaeologist(std::string);
-    int do_action() override;
+    int do_action( bool &) override;
     void set_action() override;
 };
 
@@ -130,7 +130,7 @@ public:
 class Mayor : public Hero{
 public:
     using Hero::Hero;
-    int do_action() override;
+    int do_action(bool &) override;
     Mayor(place);
     void set_action() override;
 };
