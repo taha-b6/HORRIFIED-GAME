@@ -5,13 +5,19 @@
 #include <map>
 #include "card.hpp"
 #include "place.hpp"
+
 //========================================================================================================================//
 using namespace std;
+vector<item_info> bag_items::items_in_the_game = {};
+vector<item_info> bag_items::items_out_the_game = {};
+vector<perk_card *> bag_perks::Perk_cards={};
+
+
 //========================================================================================================================//
 bag_items::bag_items() {
     item_info i;
 
-    i.count = 2; 
+    // حذف خط i.count = 2; چون در مقداردهی بعدی مقداردهی می‌شود
 
     i = {"flower", "docks", "yellow", 2, 2}; items_in_the_game.push_back(i);
     i = {"tarot deck", "camp", "yellow", 3, 2}; items_in_the_game.push_back(i);
@@ -65,10 +71,10 @@ perk_card* bag_perks::get_one_perk_card(){
     original->set_count(count);
 
     if (count == 0)
-    {    std::string name;
-
+    {
         Perk_cards.pop_back();
         delete original;
+        return nullptr;  // کارت حذف شده، پس nullptr باز می‌گردد
     }
 
     perk_card* copy = original->clone();
@@ -82,13 +88,13 @@ void bag_perks::constract_perk_cart(){
     Perk_cards.push_back(p);
     p = new break_of_dawn(3);
     Perk_cards.push_back(p);
-    p=new overstock(4);
+    p = new overstock(4);
     Perk_cards.push_back(p);
-    p=new late_into_the_night(4);
+    p = new late_into_the_night(4);
     Perk_cards.push_back(p);
-    p=new repel(3);
+    p = new repel(3);
     Perk_cards.push_back(p);
-    p=new hurry(3);
+    p = new hurry(3);
     Perk_cards.push_back(p);
 }
 //========================================================================================================================//
@@ -111,7 +117,6 @@ void bag_items::put_Itme_IN_Place(int a){
 
             if (items_out_the_game.back().count == 0)
             {
-                items_in_the_game.push_back(items_out_the_game.back());
                 items_out_the_game.pop_back();
             }
         }
@@ -121,14 +126,13 @@ void bag_items::put_Itme_IN_Place(int a){
 
             auto it = moving::get_place(n);
 
-            item newItem(items_in_the_game.back().power, items_in_the_game.back().color,items_in_the_game.back().name );
+            item newItem(items_in_the_game.back().power, items_in_the_game.back().color, items_in_the_game.back().name );
             it.items_list.push_back(newItem);
             a -= 1;
             items_in_the_game.back().count -= 1;
 
             if (items_in_the_game.back().count == 0)
             {
-                items_out_the_game.push_back(items_in_the_game.back());
                 items_in_the_game.pop_back();
             }
         }
@@ -146,13 +150,12 @@ void bag_items::icraese_item_out_the_game(item i){
         }
     }
     item_info l;
-    l.name=i.name;
-    l.color=i.get_coler();
-    l.count=1;
-    l.power=i.get_power();
+    l.name = i.name;
+    l.color = i.get_coler();
+    l.count = 1;
+    l.power = i.get_power();
     items_out_the_game.push_back(l);
 }
-
 //========================================================================================================================//
 string item::get_coler() const{
     return color;
@@ -183,34 +186,28 @@ void visit_from_the_detective::play_perk(Monster *monster , bool&){
         }
     }
 }
-
 //========================================================================================================================//
-
-void repel::play_perk(Monster *deracula, Monster *inviseble_man , bool& f){ // برای حرکت دادن هیولا ها دو خانه
+void repel::play_perk(Monster *deracula, Monster *inviseble_man , bool& f){
     moving::set_new_location();
 }
 //========================================================================================================================//
 void break_of_dawn::play_perk(bool&  f){
-    f=true;
+    f = true;
     bag_items::put_Itme_IN_Place(2);
 }
 //========================================================================================================================//
-
 void overstock::play_perk(bool& f){
     bag_items::put_Itme_IN_Place(2);
 }
-
 //========================================================================================================================//
-
 void late_into_the_night::play_perk(Hero *hero , bool&f){
     hero->increase_action(2);
 }
 //========================================================================================================================//
 void hurry::play_perk(Hero *archaeologist, Hero *mayor , bool&f){
-    // برای حرکت دادن هر دو قهرمان دو حانه
     moving::set_new_location(1);
 }
-//========================================================================================================================// //
+//========================================================================================================================//
 void perk_card::set_count(int new_count){
     count = new_count;
 }

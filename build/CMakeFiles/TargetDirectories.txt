@@ -1,0 +1,3 @@
+/home/mammad/mamad/project/build/CMakeFiles/app.dir
+/home/mammad/mamad/project/build/CMakeFiles/edit_cache.dir
+/home/mammad/mamad/project/build/CMakeFiles/rebuild_cache.dir

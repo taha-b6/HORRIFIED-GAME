@@ -39,13 +39,13 @@ public:
     void go_to_near_place(Hero *);
     void put_in_place(Hero *);
     static void put_villager_in_place(  Hero* , place & , place&);
-    static void put_villager_in_place( Hero* ,place& , std::string ="");
+    static void put_villager_in_place( Hero* ,place& , std::string  ="");
     void put_vilager(Villager);
     static std::vector<item>get_items(int);
     void show_near_place();
     bool get_tabot();
     void destroy_tabot();
-    int get_monster_in_place();
+    int get_monster_in_place() ;
     void kill_monster(int);
     void erase_item();
     int get_num_of_items();

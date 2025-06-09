@@ -17,36 +17,26 @@
 #include"moving.hpp"
 #include"place.hpp"
 
-constexpr int totalWidth = 120;
-constexpr int colHalfWidth = totalWidth / 2;
-constexpr int colQuarterWidth = totalWidth / 4;
-
-class dice{
-private:
+//constexpr int totalWidth = 120;
+//constexpr int colHalfWidth = totalWidth / 2;
+//constexpr int colQuarterWidth = totalWidth / 4;
 
 
-public:
-};
 
 //*********************************************************************************************************//
-struct Hero1 {
-    std::string name;
-    int health;
-    int power;
-    std::string position;
-};
 
-struct Creature1 {
-    std::string name;
-    std::string location;
-};
 
-struct Place1 {
-    std::string name;
-    std::string items; // یا داده مناسب دیگه
-    int get_num_of_items() const;               // باید این متد پیاده‌سازی بشه
-    std::vector<std::string> Show_villager_monster() const;  // همینطور این هم باید موجود باشه
-};
+
+// اعلام کلاس‌ها (فوروارد دکلریشن)
+class Hero;
+class place;
+
+// تابع رابط کاربری متنی
+void TUI_refresh(const Hero* hero1, const Hero* hero2, const std::vector<Place*>& places, int terrorLevel);
+
+
+
+
 
 void gameboard_operation();
 

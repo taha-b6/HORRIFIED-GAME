@@ -10,6 +10,44 @@
 
 using namespace std;
 //========================================================================================================================//
+std::string Monster::wher_is_monster="";  
+
+//========================================================================================================================//
+int which_perk_card(perk_card *c)
+{
+    if (dynamic_cast<visit_from_the_detective *>(c))
+    {
+        return 1;
+    }
+    else if (dynamic_cast<break_of_dawn *>(c))
+    {
+        return 2;
+    }
+    else if (dynamic_cast<overstock *>(c))
+    {
+        return 3;
+    }
+    else if (dynamic_cast<late_into_the_night *>(c))
+    {
+        return 4;
+    }
+    else if (dynamic_cast<repel *>(c))
+    {
+        return 5;
+    }
+    else if (dynamic_cast<hurry *>(c))
+    {
+        return 6;
+    }
+    else
+    {
+        return 0;
+    }
+}
+//========================================================================================================================//
+
+
+
 void do_perk(Hero *h ,bool & f)
 {
     int a;
@@ -66,39 +104,7 @@ void do_perk(Hero *h ,bool & f)
         }
     }
 }
-//========================================================================================================================//
-int which_perk_card(perk_card *c)
-{
-    if (dynamic_cast<visit_from_the_detective *>(c))
-    {
-        return 1;
-    }
-    else if (dynamic_cast<break_of_dawn *>(c))
-    {
-        return 2;
-    }
-    else if (dynamic_cast<overstock *>(c))
-    {
-        return 3;
-    }
-    else if (dynamic_cast<late_into_the_night *>(c))
-    {
-        return 4;
-    }
-    else if (dynamic_cast<repel *>(c))
-    {
-        return 5;
-    }
-    else if (dynamic_cast<hurry *>(c))
-    {
-        return 6;
-    }
-    else
-    {
-        return 0;
-    }
-}
-//========================================================================================================================//
+
 string to_string(Place p)
 {
     switch (p)
@@ -185,7 +191,7 @@ void Hero::get_one_item()
 
 //========================================================================================================================//
 
-string Hero::get_hero_place()
+string Hero::get_hero_place()const
 {
     return wher_is_hero;
 }
@@ -253,6 +259,12 @@ void Archaeologist::set_action()
 {
     action = 4;
 }
+Mayor::Mayor(string pl){
+    wher_is_hero=pl;
+        name = "Mayor";
+
+}
+
 //========================================================================================================================//
 void Mayor::set_action()
 {
@@ -619,6 +631,7 @@ bool Invisible_man::invisible_man_strike()
         return true;
         // فاز هیولا رد شود
     }
+    return false;
 }
 //================================================================================]
 void Deracula::Deracula_special_power()
@@ -640,6 +653,7 @@ bool Deracula::Deracula_strike()
             try
             {
                 moving::get_place(wher_is_monster).get_hero_in_place()->get_one_item();
+                return true;
             }
             catch (runtime_error &e)
             {
@@ -650,8 +664,10 @@ bool Deracula::Deracula_strike()
         if (a != 1)
         {
             moving::set_new_location(moving::get_place(wher_is_monster).get_hero_in_place(), "hospital", true);
+            return true;
         }
     }
+    return false;
 }
 //===============================================================================
 Hero::~Hero(){

@@ -14,7 +14,7 @@ private:
 public:
     Dice D_E = Empety;
     Dice D_S = Special_power;
-    Dice D_S = Attack;
+    Dice D_A = Attack;
     std::string name;
     monster_card(){}
     virtual ~monster_card(){}

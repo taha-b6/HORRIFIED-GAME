@@ -8,10 +8,14 @@
 #include <map>
 #include "place.hpp"
 #include "moving.hpp"
+#include"character.hpp"
+#include"card.hpp"
 #include <queue>
 
 //========================================================================================================================//
-
+class Hero;
+class Monster;
+class perk_card;
 struct card{
     std::string name;
     int count;
@@ -187,6 +191,24 @@ class hurry : public perk_card
     }
 };
 //========================================================================================================================//
+class item
+{
+private:
+    std::string color;
+    int power;
+
+public:
+    std::string name;
+    item(int, std::string , std::string);
+    std::string get_coler() const;
+    int get_power() const;
+    
+};
+
+//========================================================================================================================//
+
+
+//========================================================================================================================//
 class bag_items
 {
     friend class item;
@@ -200,22 +222,5 @@ public:
     static void put_Itme_IN_Place(int a);
     static void icraese_item_out_the_game(item);
 };
-//========================================================================================================================//
-class item
-{
-private:
-    std::string color;
-    int power;
-    std::string name;
-
-public:
-    std::string name;
-    item(int, std::string , std::string);
-    std::string get_coler() const;
-    int get_power() const;
-    
-};
-
-//========================================================================================================================//
 
 #endif

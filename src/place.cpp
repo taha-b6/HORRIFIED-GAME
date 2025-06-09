@@ -6,10 +6,12 @@
 #include "place.hpp"
 #include <map>
 #include <algorithm>
+using namespace std;
 
 //========================================================================================================================//
-
-using namespace std;
+std::vector<item> place::items_list = {};
+std::vector<std::string> place::near_place = {};
+std::vector<Villager> place::villager_in_place = {};
 
 place::place(string n) : name(n)
 {
@@ -111,8 +113,6 @@ place::place(string n) : name(n)
         near_place.push_back("laboratory");
     }
 }
-
-place::~place() {}
 //========================================================================================================================//
 void place::delete_monster(Monster *m)
 {
@@ -132,7 +132,7 @@ void place::delete_hero(Hero *h)
     }
 }
 
-void place::put_in_place(Monster *m, bool f = false)
+void place::put_in_place(Monster *m, bool f)
 {
     if (monster_in_place.size() == 2)
     {
@@ -222,7 +222,7 @@ void place::put_villager_in_place(Hero *h, place &origin, place &destination)
     }
 }
 //========================================================================================================================//
-void place::put_villager_in_place(Hero *h, place &p, std::string place_name = "")
+void place::put_villager_in_place(Hero *h, place &p, std::string place_name)
 {
     // وقتی استفاده میشود که action guid باشد
     if (place_name != "")
@@ -373,7 +373,7 @@ vector<string> place::show_villager_monster(){
     for(auto const & v :villager_in_place ){
         temp.push_back(v.name);
     }
-    for(auto & const m : monster_in_place){
+    for(auto &  m : monster_in_place){
         temp.push_back(m->m_name);
     }
     return temp;
