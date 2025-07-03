@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -rdynamic CMakeFiles/app.dir/src/main.cpp.o CMakeFiles/app.dir/src/card.cpp.o CMakeFiles/app.dir/src/character.cpp.o CMakeFiles/app.dir/src/etc.cpp.o CMakeFiles/app.dir/src/monster_card.cpp.o CMakeFiles/app.dir/src/moving.cpp.o CMakeFiles/app.dir/src/place.cpp.o -o app 

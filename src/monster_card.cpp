@@ -3,63 +3,107 @@
 #include <string>
 #include <random>
 #include "monster_card.hpp"
+
 #include "character.hpp"
 //=====================================================================================================//
 using namespace std;
+Villager* findVillagerByName(const vector<Villager*>& vil, const string& targetName) {
+    for (Villager* v : vil) {
+        if (v->name == targetName) {
+            return v; // مقدار را پیدا کردیم، آن را برمی‌گردانیم
+        }
+    }
+    return nullptr; // اگر نام یافت نشد، مقدار `nullptr` را برمی‌گردانیم
+}
 
 //=====================================================================================================//
-void monster_card::play_monster_card(int& trrorlevel)
+void monster_card::play_monster_card( vector<Villager*>& vil, int& trrorlevel , Monster * inv , Monster* de)
 {
+
+    Invisible_man * invisible_man=dynamic_cast<Invisible_man*>(inv);
+    Deracula* deracula=dynamic_cast<Deracula*>(de);
+    if(invisible_man||deracula){
     bag_items::put_Itme_IN_Place(items_num);
 
     if (event_bio_id == 1)
     {
-        moving::set_location_deracula();
+        try{
+        moving::set_location_deracula();}
+        catch(runtime_error & e){
+            cerr<<e.what()<<endl;
+        }
     } // دراکولا رو به موقعیت قهرمان ببر
+    
+    
     if (event_bio_id == 2)
     {
-        moving::set_location_deracula("crypt");
+        try{
+        moving::set_location_deracula("abbey");}
+        catch(runtime_error & e){
+            cerr<<e.what()<<endl;
+        }
     } // DERACULA -----> CRYPT
+    
+    
     if (event_bio_id == 3)
     {
         moving::set_location_invisible_man();
     } // اول مرد نامرِی رو به مکانی که بیشترین ایتم را دارد ببر دوم ایتم ها را از بازی خراج کن کن
+    
+    
     if (event_bio_id == 4)
-    {
-        Villager WILBUR("WILBUR_&_CHICK ", "dungeon");
-        moving::set_location_for_villagers(WILBUR, "dock");
+    {   
+        Villager* t= findVillagerByName(vil , "WILBUR_&_CHICK");
+        if(t!=nullptr){ 
+        moving::get_place("docks")->put_vilager(t);}
     } // WILBUR & CHICK -------> DOCK
+    
+    
     if (event_bio_id == 5)
     {
-        Villager MALEVA("MALEVA", "snop");
-        moving::set_location_for_villagers(MALEVA, "camp");
+        Villager* t= findVillagerByName(vil , "MELVA");
+        if(t!= nullptr){
+        moving::get_place("camp")->put_vilager(t);}
+        
     } // MALEVA ------>CAMP
+    
     if (event_bio_id == 6)
     {
-        Villager DR_CRANLY("DR_CRANLY", "precinct");
-        moving::set_location_for_villagers(DR_CRANLY, "laboratory");
+        Villager* t= findVillagerByName(vil , "DR_CRANLY");
+        if(t!= nullptr){
+        moving::get_place("laboratory")->put_vilager(t);}
+        
     } // DR.CRANLY-------->LABORATORY
     if (event_bio_id == 7)
     {
-        Villager FRITZ("FRITZ", "institute");
-        moving::set_location_for_villagers(FRITZ, "tower");
+        Villager* t= findVillagerByName(vil , "FRITZ");
+        if(t!= nullptr){
+        moving::get_place( "tower")->put_vilager(t);}
+        
     } // FRITZ ------->TOWER
+    
     if (event_bio_id == 8)
     {
-        Villager MARIA("MARIA", "camp");
-        moving::set_location_for_villagers(MARIA, "barn");
+        Villager* t= findVillagerByName(vil , "MARIA");
+        if(t!= nullptr){
+        moving::get_place("barn")->put_vilager(t);}
+        
     } // MARIA ------->BARN
+    
     if (event_bio_id == 9)
     {
-        Villager PROF_PEARSON("PROF_PEARSON", "museum");
-        moving::set_location_for_villagers(PROF_PEARSON, "cave");
-    } // PR.PEARSON --------->CAVE
+        Villager* t= findVillagerByName(vil , "PROF_PEARSON");
+        if(t!= nullptr){
+        moving::get_place( "cave")->put_vilager(t);}
+        
+    } // PR.PEARSON --------->CAVE    
     if (event_bio_id == 10)
     {
-        Villager DR_REED("DR_REED", "camp");
-        moving::set_location_for_villagers(DR_REED, "institute");
+        Villager* t= findVillagerByName(vil , "DR_REED");
+        if(t!= nullptr){
+        moving::get_place("institute")->put_vilager(t);}
+        
     } // SDR.READ ------->INSTITUTE
-
     bool flag_invisible_man_power = false;
 
     for (auto &a : strike_arrange)
@@ -82,124 +126,132 @@ void monster_card::play_monster_card(int& trrorlevel)
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
+                    deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 0 && t2 == 2)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f=Invisible_man::invisible_man_strike();
+                    bool f=invisible_man->invisible_man_strike();
                     if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    bool f= Deracula::Deracula_strike();
+                    bool f= deracula->Deracula_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 1 && t2 == 0)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
-                    Deracula::Deracula_special_power();
+                    deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 1 && t2 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
                 if (a == "Deracula")
                 {
-                    Deracula::Deracula_special_power();
+                   deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 1 && t2 == 2)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    Invisible_man::invisible_man_strike();
+                    invisible_man->invisible_man_strike();
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
-                    bool f= Deracula::Deracula_strike();
+                    deracula->Deracula_special_power();
+                    bool f= deracula->Deracula_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 2 && t2 == 0)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f= invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    bool f= Deracula::Deracula_strike();
+                    bool f= deracula->Deracula_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 2 && t2 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f=invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
-                    bool f= Deracula::Deracula_strike();
+                    deracula->Deracula_special_power();
+                    bool f= deracula->Deracula_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 2 && t2 == 2)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    Invisible_man::invisible_man_strike();
+                   invisible_man->invisible_man_strike();
                 } // done
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                   bool f= Deracula::Deracula_strike();
+                   bool f=deracula->Deracula_strike();
                         if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
@@ -217,235 +269,248 @@ void monster_card::play_monster_card(int& trrorlevel)
 
             if (t1 == 1 && t2 == 0 && t3 == 0)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
+                   deracula->Deracula_special_power();
                 }
             }
 
             if (t1 == 1 && t2 == 1 && t3 == 0)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
+                   deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 1 && t2 == 1 && t3 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
+                   deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 2 && t2 == 1 && t3 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f=invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
                     }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
-                    bool f= Deracula::Deracula_strike();
+                   deracula->Deracula_special_power();
+                    bool f=deracula->Deracula_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 2 && t2 == 2 && t3 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f= invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
-                   bool f= Deracula::Deracula_strike();
+                    deracula->Deracula_special_power();
+                   bool f= deracula->Deracula_strike();
                         if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 2 && t2 == 2 && t3 == 2)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f= invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    bool f =Deracula::Deracula_strike();
+                    bool f =deracula->Deracula_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 0 && t2 == 1 && t3 == 0)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
+                    deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 0 && t2 == 0 && t3 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
+                    deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 0 && t2 == 1 && t3 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
+                    deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 1 && t2 == 0 && t3 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
+                    deracula->Deracula_special_power();
                 } // done
             }
 
             if (t1 == 1 && t2 == 2 && t3 == 1)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f= invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
-                    bool f= Deracula::Deracula_strike();
+                    deracula->Deracula_special_power();
+                    bool f= deracula->Deracula_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 1 && t2 == 1 && t3 == 2)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f= invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
-                   bool f= Deracula::Deracula_strike();
+                    deracula->Deracula_special_power();
+                   bool f= deracula->Deracula_strike();
                         if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 2 && t2 == 1 && t3 == 2)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f= invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
-                   bool f= Deracula::Deracula_strike();
+                    deracula->Deracula_special_power();
+                   bool f= deracula->Deracula_strike();
                         if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
 
             if (t1 == 1 && t2 == 2 && t3 == 2)
             {
-                if (a == "invisible man")
+                if (a == "invisible_man")
                 {
-                    bool f= Invisible_man::invisible_man_strike();
+                    bool f= invisible_man->invisible_man_strike();
                          if(f){
                         trrorlevel++;
+                        return;
                     }
                     cout << "STALK UNSEEN IS ON!!!!!!" << endl;
                     flag_invisible_man_power = true;
                 } // edit
-                if (a == "Deracula")
+                if (a == "deracula")
                 {
-                    Deracula::Deracula_special_power();
-                   bool f= Deracula::Deracula_strike();
+                    deracula->Deracula_special_power();
+                   bool f= deracula->Deracula_strike();
                         if(f){
                         trrorlevel++;
+                        return;
                     }
                 } // done
             }
@@ -453,8 +518,9 @@ void monster_card::play_monster_card(int& trrorlevel)
     }
     if (flag_invisible_man_power == true)
     {
-        Invisible_man::invisible_man_special_power();
+        invisible_man->invisible_man_special_power();
     }
+cout<<"end of play monster card!!!!!!!!!!!!!!!!!!!!"<<endl;}
 }
 
 //=====================================================================================================//
@@ -504,6 +570,7 @@ form_of_the_bat::form_of_the_bat()
     strike_dice_num = 2;
     items_num = 2;
     event_bio = "Take Dracula to the current hero's location.";
+    strike_arrange={};
 }
 //=====================================================================================================//
 
@@ -512,10 +579,11 @@ sunrise::sunrise()
 {
     event_bio_id = 2;
     num_of_this_card = 3;
+    name="sunrise";
     strike_move = 1;
     strike_dice_num = 2;
     items_num = 0;
-    event_bio = "Put Deracula in <crypt>.";
+    event_bio = "Put Deracula in <abbay>.";
     strike_arrange = {"invisible_man"};
 }
 
@@ -526,6 +594,7 @@ thief::thief()
     num_of_this_card = 5;
     strike_move = 1;
     strike_dice_num = 3;
+    name="thief";
     items_num = 2;
     event_bio = "Move the Invisible Man character to the location with the most items and remove all items from that location from the map and return them to the out-of-game location.";
     strike_arrange = {"invisible_man", "deracula"};
@@ -538,6 +607,7 @@ the_delivery::the_delivery()
     num_of_this_card = 1;
     strike_move = 1;
     strike_dice_num = 3;
+    name="the_delivery";
     items_num = 3;
     event_bio = "You need to place the Chick & Wilbur characters at the Docks location.";
     strike_arrange = {};
@@ -551,6 +621,7 @@ fortune_teller::fortune_teller()
     strike_move = 1;
     strike_dice_num = 2;
     items_num = 3;
+    name="fortune_teller";
     event_bio = "You need to place the Maleva character in the Camp location";
     strike_arrange = {};
 }
@@ -561,6 +632,7 @@ former_employer::former_employer()
     num_of_this_card = 1;
     strike_move = 1;
     strike_dice_num = 2;
+    name="former_employer";
     items_num = 3;
     event_bio = "Put Dr.Cranly character in the Laboratory location.";
     strike_arrange = {"invisible_man"};
@@ -573,6 +645,7 @@ hurried_assistant::hurried_assistant()
     num_of_this_card = 1;
     strike_move = 2;
     strike_dice_num = 3;
+    name="hurried_assistant";
     items_num = 3;
     event_bio = "Put Fritz in the Tower";
     strike_arrange = {"deracula"};
@@ -585,6 +658,7 @@ the_inocent::the_inocent()
     num_of_this_card = 1;
     strike_move = 1;
     strike_dice_num = 3;
+    name="the_inocent";
     items_num = 3;
     event_bio = "Put Maria in Barn";
     strike_arrange = {"deracula", "invisible_man"};
@@ -596,6 +670,7 @@ egyptian_expert::egyptian_expert()
     num_of_this_card = 1;
     strike_move = 2;
     strike_dice_num = 2;
+    name="egyptian_expert";
     items_num = 3;
     event_bio = "Put Prof.pearson in the Cave";
     strike_arrange = {"deracula"};
@@ -608,6 +683,7 @@ the_Ichthyologist::the_Ichthyologist()
     num_of_this_card = 1;
     strike_move = 1;
     strike_dice_num = 2;
+    name="the_Ichthyologist";
     items_num = 3;
     event_bio = "Put Dr.read character in Institute";
     strike_arrange = {};
@@ -626,7 +702,7 @@ monster_card * bag_of_monster_card::draw_random_card()
 
     int index = dist(gen);
     monster_card *selected = monster_card_bag[index];
-
+    clog<<"**********"<<endl<<selected->get_name()<<endl;
     monster_card_bag.erase(monster_card_bag.begin() + index); // حذف کارت از دسته
 
     return selected; // برگردوندن کارت انتخاب‌شده

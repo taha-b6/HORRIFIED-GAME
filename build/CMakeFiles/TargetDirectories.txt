@@ -1,0 +1,3 @@
+/home/taha/taha/HORRIFIED1/HORRIFIED-GAME/build/CMakeFiles/app.dir
+/home/taha/taha/HORRIFIED1/HORRIFIED-GAME/build/CMakeFiles/edit_cache.dir
+/home/taha/taha/HORRIFIED1/HORRIFIED-GAME/build/CMakeFiles/rebuild_cache.dir

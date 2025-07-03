@@ -8,10 +8,13 @@
 #include <map>
 #include "place.hpp"
 #include "moving.hpp"
+#include"character.hpp"
 #include <queue>
 
 //========================================================================================================================//
-
+class Hero;
+class Monster;
+class perk_card;
 struct card{
     std::string name;
     int count;
@@ -23,8 +26,14 @@ struct item_info{ //****** changed
     std::string color;
     std::string name;
     std::string location;
-    int count;
     int power;
+    item_info(std::string n , std::string m , std::string c , int p ){
+        name=n;
+        location = m;
+        color=c;
+        power=p;
+    }
+    item_info(){}
 };
 
 
@@ -46,7 +55,7 @@ public:
     virtual perk_card* clone()  = 0;
     void set_count(int);
     int &get_count();
-    virtual ~perk_card();
+    virtual ~perk_card(){}
 };
 //========================================================================================================================//
 
@@ -54,7 +63,7 @@ class bag_perks
 {
 public:
     static perk_card *get_one_perk_card();
-    void constract_perk_cart(); // for read perk card from file
+    static void constract_perk_cart(); // for read perk card from file
 private:
     static std::vector<perk_card *> Perk_cards;
 };
@@ -78,6 +87,7 @@ public:
     {
         return new visit_from_the_detective(*this);
     }
+    ~visit_from_the_detective(){}
 
 };
 //========================================================================================================================//
@@ -100,6 +110,7 @@ public:
     {
         return new break_of_dawn(*this);
     }
+    ~break_of_dawn(){}
 };
 
 //========================================================================================================================//
@@ -121,6 +132,7 @@ public:
     {
         return new overstock(*this);
     }
+    ~overstock(){}
 };
 
 //========================================================================================================================//
@@ -143,6 +155,7 @@ void play_perk(Hero *, Hero * ,bool&) override {}
     {
         return new late_into_the_night(*this);
     }
+    ~late_into_the_night(){}
 };
 //========================================================================================================================//
 class repel : public perk_card
@@ -151,7 +164,7 @@ class repel : public perk_card
     void play_perk(Hero *, Hero * , bool&) override {}
  void play_perk(Monster *, bool&) override{}
  void play_perk(bool&) override{}
- void play_perk(Hero * , bool&) override;
+ void play_perk(Hero * , bool&) override {}
 
     public:
     repel(int const)
@@ -164,15 +177,16 @@ class repel : public perk_card
     {
         return new repel(*this);
     }
+    ~repel(){}
 };
 //========================================================================================================================//
 class hurry : public perk_card
 {
     private:
-    void play_perk(Monster *, Monster * , bool&) override;
+    void play_perk(Monster *, Monster * , bool&) override{}
     void play_perk(Monster * , bool&) override{}
     void play_perk(bool &) override{}
-    void play_perk(Hero *, bool&) override;
+    void play_perk(Hero *, bool&) override{}
 
     public:
     hurry(int count)
@@ -185,7 +199,25 @@ class hurry : public perk_card
     {
         return new hurry(*this);
     }
+    ~hurry(){}
 };
+//========================================================================================================================//
+class item
+{
+private:
+  item_info i;
+public:
+    std::string name;
+    item(item_info);
+    std::string get_coler() const;
+    int get_power() const;
+    item_info get_item_for_out_the_game();
+    
+};
+
+//========================================================================================================================//
+
+
 //========================================================================================================================//
 class bag_items
 {
@@ -200,22 +232,5 @@ public:
     static void put_Itme_IN_Place(int a);
     static void icraese_item_out_the_game(item);
 };
-//========================================================================================================================//
-class item
-{
-private:
-    std::string color;
-    int power;
-    std::string name;
-
-public:
-    std::string name;
-    item(int, std::string , std::string);
-    std::string get_coler() const;
-    int get_power() const;
-    
-};
-
-//========================================================================================================================//
 
 #endif

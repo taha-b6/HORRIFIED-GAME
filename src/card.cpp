@@ -5,164 +5,265 @@
 #include <map>
 #include "card.hpp"
 #include "place.hpp"
+#include <random>
+
 //========================================================================================================================//
 using namespace std;
+vector<item_info> bag_items::items_in_the_game = {};
+vector<item_info> bag_items::items_out_the_game = {};
+vector<perk_card *> bag_perks::Perk_cards = {};
+
 //========================================================================================================================//
-bag_items::bag_items() {
+bag_items::bag_items()
+{
     item_info i;
 
-    i.count = 2; 
+    i = {"flower", "docks", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"flower", "docks", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"tarot deck", "camp", "yellow", 3};
+    items_in_the_game.push_back(i);
+    i = {"tarot deck", "camp", "yellow", 3};
+    items_in_the_game.push_back(i);
+    i = {"garlic", "inn", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"garlic", "inn", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"mirrored box", "mansion", "yellow", 3};
+    items_in_the_game.push_back(i);
+    i = {"mirrored box", "mansion", "yellow", 3};
+    items_in_the_game.push_back(i);
+    i = {"stake", "abbey", "yellow", 3};
+    items_in_the_game.push_back(i);
+    i = {"stake", "abbey", "yellow", 3};
+    items_in_the_game.push_back(i);
+    i = {"holy water", "church", "yellow", 4};
+    items_in_the_game.push_back(i);
+    i = {"holy water", "church", "yellow", 4};
+    items_in_the_game.push_back(i);
+    i = {"crucifix", "graveyard", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"crucifix", "graveyard", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"torch", "barn", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"torch", "barn", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"silver dagger", "tower", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"silver dagger", "tower", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"vampire book", "mansion", "red", 4};
+    items_in_the_game.push_back(i);
+    i = {"vampire book", "mansion", "red", 4};
+    items_in_the_game.push_back(i);
+    i = {"explosive vial", "cave", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"explosive vial", "cave", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"axe", "barn", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"axe", "barn", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"blood sample", "precinct", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"blood sample", "precinct", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"crossbow", "dungion", "red", 4};
+    items_in_the_game.push_back(i);
+    i = {"crossbow", "dungion", "red", 4};
+    items_in_the_game.push_back(i);
+    i = {"spear", "crypt", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"spear", "crypt", "red", 3};
+    items_in_the_game.push_back(i);
 
-    i = {"flower", "docks", "yellow", 2, 2}; items_in_the_game.push_back(i);
-    i = {"tarot deck", "camp", "yellow", 3, 2}; items_in_the_game.push_back(i);
-    i = {"garlic", "inn", "yellow", 2, 2}; items_in_the_game.push_back(i);
-    i = {"mirrored box", "mansion", "yellow", 3, 2}; items_in_the_game.push_back(i);
-    i = {"stake", "abbey", "yellow", 3, 2}; items_in_the_game.push_back(i);
-    i = {"holy water", "church", "yellow", 4, 2}; items_in_the_game.push_back(i);
-    i = {"crucifix", "graveyard", "yellow", 2, 2}; items_in_the_game.push_back(i);
-
-    i = {"torch", "barn", "red", 2, 2}; items_in_the_game.push_back(i);
-    i = {"silver dagger", "tower", "red", 3, 2}; items_in_the_game.push_back(i);
-    i = {"vampire book", "mansion", "red", 4, 2}; items_in_the_game.push_back(i);
-    i = {"explosive vial", "cave", "red", 3, 2}; items_in_the_game.push_back(i);
-    i = {"axe", "barn", "red", 2, 2}; items_in_the_game.push_back(i);
-    i = {"blood sample", "precinct", "red", 2, 2}; items_in_the_game.push_back(i);
-    i = {"crossbow", "dungeon", "red", 4, 2}; items_in_the_game.push_back(i);
-    i = {"spear", "crypt", "red", 3, 2}; items_in_the_game.push_back(i);
-
-    i = {"mind elixir", "laboratory", "blue", 2, 2}; items_in_the_game.push_back(i);
-    i = {"hypnotic charm", "institute", "blue", 3, 2}; items_in_the_game.push_back(i);
-    i = {"ghost mirror", "mansion", "blue", 2, 2}; items_in_the_game.push_back(i);
-    i = {"scientific journal", "institute", "blue", 4, 2}; items_in_the_game.push_back(i);
-    i = {"telepathy stone", "laboratory", "blue", 2, 2}; items_in_the_game.push_back(i);
-    i = {"magnetic compass", "camp", "blue", 3, 2}; items_in_the_game.push_back(i);
-    i = {"dream catcher", "inn", "blue", 2, 2}; items_in_the_game.push_back(i);
-
-    i = {"sacred scroll", "church", "yellow", 2, 2}; items_in_the_game.push_back(i);
-    i = {"crystal ball", "tower", "yellow", 3, 2}; items_in_the_game.push_back(i);
-    i = {"magic talisman", "cave", "yellow", 2, 2}; items_in_the_game.push_back(i);
-    i = {"sun medallion", "graveyard", "yellow", 4, 2}; items_in_the_game.push_back(i);
-
-    i = {"ancient relic", "museum", "red", 3, 2}; items_in_the_game.push_back(i);
-    i = {"ritual knife", "crypt", "red", 2, 2}; items_in_the_game.push_back(i);
-    i = {"soul urn", "dungeon", "red", 3, 2}; items_in_the_game.push_back(i);
-
-    i = {"mental tonic", "hospital", "blue", 2, 2}; items_in_the_game.push_back(i);
-    i = {"calming incense", "theater", "blue", 2, 2}; items_in_the_game.push_back(i);
-    i = {"spirit lantern", "cemetery", "yellow", 2, 2}; items_in_the_game.push_back(i);
-    i = {"protective amulet", "precinct", "blue", 3, 2}; items_in_the_game.push_back(i);
-    i = {"enchanted rope", "camp", "red", 2, 2}; items_in_the_game.push_back(i);
+    i = {"mind elixir", "laboratory", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"mind elixir", "laboratory", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"hypnotic charm", "institute", "blue", 3};
+    items_in_the_game.push_back(i);
+    i = {"hypnotic charm", "institute", "blue", 3};
+    items_in_the_game.push_back(i);
+    i = {"ghost mirror", "mansion", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"ghost mirror", "mansion", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"scientific journal", "institute", "blue", 4};
+    items_in_the_game.push_back(i);
+    i = {"scientific journal", "institute", "blue", 4};
+    items_in_the_game.push_back(i);
+    i = {"telepathy stone", "laboratory", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"telepathy stone", "laboratory", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"magnetic compass", "camp", "blue", 3};
+    items_in_the_game.push_back(i);
+    i = {"magnetic compass", "camp", "blue", 3};
+    items_in_the_game.push_back(i);
+    i = {"dream catcher", "inn", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"dream catcher", "inn", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"sacred scroll", "church", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"sacred scroll", "church", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"crystal ball", "tower", "yellow", 3};
+    items_in_the_game.push_back(i);
+    i = {"crystal ball", "tower", "yellow", 3};
+    items_in_the_game.push_back(i);
+    i = {"magic talisman", "cave", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"magic talisman", "cave", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"sun medallion", "graveyard", "yellow", 4};
+    items_in_the_game.push_back(i);
+    i = {"sun medallion", "graveyard", "yellow", 4};
+    items_in_the_game.push_back(i);
+    i = {"ancient relic", "musium", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"ancient relic", "musium", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"ritual knife", "crypt", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"ritual knife", "crypt", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"soul urn", "dungion", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"soul urn", "dungion", "red", 3};
+    items_in_the_game.push_back(i);
+    i = {"mental tonic", "hospital", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"mental tonic", "hospital", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"calming incense", "theatre", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"calming incense", "theatre", "blue", 2};
+    items_in_the_game.push_back(i);
+    i = {"spirit lantern", "camp", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"spirit lantern", "camp", "yellow", 2};
+    items_in_the_game.push_back(i);
+    i = {"protective amulet", "precinct", "blue", 3};
+    items_in_the_game.push_back(i);
+    i = {"protective amulet", "precinct", "blue", 3};
+    items_in_the_game.push_back(i);
+    i = {"enchanted rope", "camp", "red", 2};
+    items_in_the_game.push_back(i);
+    i = {"enchanted rope", "camp", "red", 2};
+    items_in_the_game.push_back(i);
 }
 
 //=============================================================================================================//
-perk_card* bag_perks::get_one_perk_card(){
+
+perk_card *bag_perks::get_one_perk_card()
+{
     if (Perk_cards.empty())
         return nullptr;
 
-    perk_card* original = Perk_cards.back();
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, Perk_cards.size() - 1);
+
+    int index = dist(gen);
+    perk_card *original = Perk_cards[index];
 
     int count = original->get_count() - 1;
     original->set_count(count);
 
     if (count == 0)
-    {    std::string name;
-
-        Perk_cards.pop_back();
+    {
         delete original;
+        Perk_cards.erase(Perk_cards.begin() + index);
+        return nullptr;
     }
 
-    perk_card* copy = original->clone();
+    perk_card *copy = original->clone();
     copy->set_count(1);
 
     return copy;
 }
+
 //========================================================================================================================//
-void bag_perks::constract_perk_cart(){
-    perk_card* p = new visit_from_the_detective(3);
+void bag_perks::constract_perk_cart()
+{
+    perk_card *p = new visit_from_the_detective(3);
     Perk_cards.push_back(p);
     p = new break_of_dawn(3);
     Perk_cards.push_back(p);
-    p=new overstock(4);
+    p = new overstock(4);
     Perk_cards.push_back(p);
-    p=new late_into_the_night(4);
+    p = new late_into_the_night(4);
     Perk_cards.push_back(p);
-    p=new repel(3);
+    p = new repel(3);
     Perk_cards.push_back(p);
-    p=new hurry(3);
+    p = new hurry(3);
     Perk_cards.push_back(p);
 }
 //========================================================================================================================//
-void bag_items::put_Itme_IN_Place(int a){
+
+void bag_items::put_Itme_IN_Place(int a)
+{
+
+    bool kodam_bag = false;
     while (a > 0)
     {
         if (items_in_the_game.empty())
         {
-            if (items_out_the_game.empty())
-                break;
+            item_info &currentItemInfo = items_out_the_game.back();
+            place *target_place = moving::get_place(currentItemInfo.location);
 
-            std::string n = items_out_the_game.back().location;
+            item newItem(currentItemInfo);
 
-            auto it = moving::get_place(n);
-
-            item newItem(items_out_the_game.back().power, items_out_the_game.back().color , items_out_the_game.back().name);
-            it.items_list.push_back(newItem);
-            a -= 1;
-            items_out_the_game.back().count -= 1;
-
-            if (items_out_the_game.back().count == 0)
-            {
-                items_in_the_game.push_back(items_out_the_game.back());
-                items_out_the_game.pop_back();
-            }
+            target_place->items_list.push_back(newItem);
+            items_in_the_game.push_back(currentItemInfo);
         }
         else
         {
-            std::string n = items_in_the_game.back().location;
 
-            auto it = moving::get_place(n);
+            item_info &currentItemInfo = items_in_the_game.back();
+            place *target_place = moving::get_place(currentItemInfo.location);
 
-            item newItem(items_in_the_game.back().power, items_in_the_game.back().color,items_in_the_game.back().name );
-            it.items_list.push_back(newItem);
-            a -= 1;
-            items_in_the_game.back().count -= 1;
+            item newItem(currentItemInfo);
 
-            if (items_in_the_game.back().count == 0)
-            {
-                items_out_the_game.push_back(items_in_the_game.back());
-                items_in_the_game.pop_back();
-            }
+            target_place->items_list.push_back(newItem);
+            items_out_the_game.push_back(currentItemInfo);
+            items_in_the_game.pop_back();
         }
+        a--;
     }
 }
+
 //=======================================================================================
-item::item(int p, std::string c , std::string n): power(p) , color(c) , name(n){
+item::item(item_info b) : i(b)
+{
 }
 //==================================================================================================
-void bag_items::icraese_item_out_the_game(item i){
-    for(auto & it: items_out_the_game){
-        if(i.name==it.name ){
-            ++it.count;
-            return;
-        }
-    }
-    item_info l;
-    l.name=i.name;
-    l.color=i.get_coler();
-    l.count=1;
-    l.power=i.get_power();
-    items_out_the_game.push_back(l);
-}
-
-//========================================================================================================================//
-string item::get_coler() const{
-    return color;
+void bag_items::icraese_item_out_the_game(item i)
+{
+    items_out_the_game.push_back(i.get_item_for_out_the_game());
 }
 //========================================================================================================================//
-int item::get_power() const{
-    return power;
+string item::get_coler() const
+{
+    return i.color;
 }
 //========================================================================================================================//
-void visit_from_the_detective::play_perk(Monster *monster , bool&){
+int item::get_power() const
+{
+    return i.power;
+}
+//===============================================================================
+item_info item::get_item_for_out_the_game()
+{
+    return i;
+}
+//========================================================================================================================//
+void visit_from_the_detective::play_perk(Monster *monster, bool &)
+{
     std::string name;
     bool success = false;
 
@@ -183,39 +284,40 @@ void visit_from_the_detective::play_perk(Monster *monster , bool&){
         }
     }
 }
-
 //========================================================================================================================//
-
-void repel::play_perk(Monster *deracula, Monster *inviseble_man , bool& f){ // برای حرکت دادن هیولا ها دو خانه
-    moving::set_new_location();
+void repel::play_perk(Monster *deracula, Monster *inviseble_man, bool &f)
+{
+    moving::set_new_location(2);
 }
 //========================================================================================================================//
-void break_of_dawn::play_perk(bool&  f){
-    f=true;
+void break_of_dawn::play_perk(bool &f)
+{
+    f = true;
     bag_items::put_Itme_IN_Place(2);
 }
 //========================================================================================================================//
-
-void overstock::play_perk(bool& f){
+void overstock::play_perk(bool &f)
+{
     bag_items::put_Itme_IN_Place(2);
 }
-
 //========================================================================================================================//
-
-void late_into_the_night::play_perk(Hero *hero , bool&f){
+void late_into_the_night::play_perk(Hero *hero, bool &f)
+{
     hero->increase_action(2);
 }
 //========================================================================================================================//
-void hurry::play_perk(Hero *archaeologist, Hero *mayor , bool&f){
-    // برای حرکت دادن هر دو قهرمان دو حانه
+void hurry::play_perk(Hero *archaeologist, Hero *mayor, bool &f)
+{
     moving::set_new_location(1);
 }
-//========================================================================================================================// //
-void perk_card::set_count(int new_count){
+//========================================================================================================================//
+void perk_card::set_count(int new_count)
+{
     count = new_count;
 }
 //========================================================================================================================//
-int &perk_card::get_count(){
+int &perk_card::get_count()
+{
     return count;
 }
 //========================================================================================================================//

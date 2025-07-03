@@ -5,20 +5,23 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include"character.hpp"
+class Villager;
+class Monster;
 //=======================================================================================================//
 enum Dice {Empety = 0 , Special_power = 1 , Attack = 2 };
 //=======================================================================================================//
 class monster_card{
 private:
-
 public:
+    std::string get_name(){return name;}
     Dice D_E = Empety;
     Dice D_S = Special_power;
-    Dice D_S = Attack;
+    Dice D_A = Attack;
     std::string name;
     monster_card(){}
     virtual ~monster_card(){}
-    virtual void play_monster_card(int&);
+    virtual void play_monster_card(std::vector<Villager*>& , int& , Monster* , Monster*);
     Dice play_dice();
     std::string card_name;
     std::string event_name;
@@ -135,6 +138,7 @@ public:
 };
 //=======================================================================================================//
 class the_Ichthyologist : public monster_card{
+    
 private:
 
 

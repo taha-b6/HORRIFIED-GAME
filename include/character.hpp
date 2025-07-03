@@ -7,12 +7,17 @@
 #include <map>
 #include "place.hpp"
 #include "monster_card.hpp"
+#include "card.hpp"
+
 //========================================================================================================================//
 enum actions {Move , Guide , Pickup , Advance , Defeat , Special_Action};
 //========================================================================================================================//
-enum Place {precinct , mansion ,musium , inn , camp , theatre , cave , institute , crypt , barn , dungeon , docks , tower , laboratory , graveyard , hospital , abbey , church , shop};
+enum Place {precinct , mansion , musium , inn , camp , theatre , cave , institute , crypt , barn , dungeon , docks , tower , laboratory , graveyard , hospital , abbey , church , shop};
 
+std::string to_string_place(int p);
 //========================================================================================================================//
+class perk_card;
+class item;
 struct monster_card_info{
     int items_push_in_game;
     std::string monster_card_event;
@@ -23,17 +28,13 @@ struct monster_card_info{
 //========================================================================================================================//
 
 class Monster{
-
 protected:
-    static::std::string wher_is_monster;
+std::string wher_is_monster="";
 public:
     std::string m_name;
-
-    std::string  get_monster_place();
     virtual ~Monster(){}
-    
+   std::string get_monster_place();
     void set_location(std::string); // اسم مکانی که او قرار دارد ست میشود
-    // پیاده سازی کلاس
 };
 
 //========================================================================================================================//
@@ -50,17 +51,12 @@ friend class the_inocent;
 friend class egyptian_expert ;
 friend class the_Ichthyologist;
 private:
-     
-    
 public:
     Deracula(){
-        m_name="Deracula";
+        m_name="deracula";
     }
-    static bool Deracula_strike();
-    static void Deracula_special_power();
-    void set_location(std::string place); 
-    Deracula();
-    virtual ~Deracula();
+    bool Deracula_strike();
+    void Deracula_special_power();
 };
 
 //========================================================================================================================//
@@ -77,17 +73,12 @@ friend class the_inocent;
 friend class egyptian_expert ;
 friend class the_Ichthyologist;
 private:
-
-
 public:
     Invisible_man(){
         m_name="invisible_man";
     }
-    static bool invisible_man_strike();
-    static void invisible_man_special_power();
-    void set_location(std::string place); 
-    Invisible_man();
-    virtual ~Invisible_man();
+    bool invisible_man_strike();
+    void invisible_man_special_power();
 };
 
 //========================================================================================================================//
@@ -99,17 +90,18 @@ public:
     Hero(const Hero &);
     Hero();
     void set_location(std::string);
-    virtual int do_action( bool &);  // do actions
+    virtual void do_action(bool &);  // do actions
     virtual void set_action() = 0; // reset the action
     void increase_action(int);
     void increase_perk_card(perk_card *);
-    void domp_perk(perk_card *);
-    std::string get_hero_place();
+    std::string get_hero_place() const;
     bool can_distroy(int , std::string);
+    virtual int show_items_n();
+    virtual int show_perks_n();
     void get_one_item();
     virtual ~Hero();
 protected:
-    std::string wher_is_hero;
+    std::string wher_is_hero="";
     std::vector<perk_card *> perk_cards;
     std::vector<item> items;
     std::vector<item> items_for_distroy_invisble_man;
@@ -121,8 +113,8 @@ protected:
 class Archaeologist : public Hero{
 public:
     using Hero::Hero;
-    Archaeologist(std::string);
-    int do_action( bool &) override;
+    Archaeologist();
+    void do_action(bool &) override;
     void set_action() override;
 };
 
@@ -130,20 +122,21 @@ public:
 class Mayor : public Hero{
 public:
     using Hero::Hero;
-    int do_action(bool &) override;
-    Mayor(place);
+    Mayor();
+    void do_action(bool &) override;
     void set_action() override;
 };
 //========================================================================================================================//
 class Villager{
-    public:
+public:
     Villager(std::string , std::string);
     void set_place(std::string);
     bool is_safe_place();
     std::string name_of_safe_place();
-    std::string name;
-    private:
-    std::string name_of_place;
+    std::string name_place();
+    std::string name="";
+private:
+    std::string name_of_place="";
     std::string safe_place;
 };
 //========================================================================================================================//
