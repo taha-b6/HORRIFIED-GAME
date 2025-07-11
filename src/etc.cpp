@@ -161,8 +161,26 @@ void gameboard_operation()
             clog << "after draw random card" << endl;
             if (m != nullptr)
             {
-                m->show_monster_card();
+                m->show_monster_card();//WHEN PROJECT TURNED TO GRPHICAL DELETE THIS HERE
                 m->play_monster_card(vil, terror_level, invisble_man, deracula);
+                //THE PLACE FOR MONSER PHASE GRAFICAL TAB
+/*                MonsterPhaseScreen monsterScreen(font); // فونت باید از قبل لود شده باشه
+monsterScreen.setCard(card);
+
+// نمایش صفحه تا وقتی که کاربر Enter بزنه و همه‌ی اتفاقات رو ببینه
+while (!monsterScreen.isFinished()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed)
+            window.close();
+        monsterScreen.handleEvent(event);
+    }
+
+    window.clear();
+    monsterScreen.draw(window);
+    window.display();
+}*/
+
             }
             else
             {

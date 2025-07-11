@@ -715,4 +715,13 @@ monster_card * bag_of_monster_card::draw_random_card()
     return false;
 }
 //==================================================================================
+std::vector<std::string> bag_of_monster_card::save_card_deck(){
 
+    std::vector<std::string> save_string{};
+
+    for (auto& temp : monster_card_bag){
+
+        save_string.push_back(temp->get_name());}
+
+        return save_string;
+}

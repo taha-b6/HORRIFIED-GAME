@@ -171,9 +171,14 @@ egyptian_expert expert;
 the_Ichthyologist ich;
 
 std::vector<monster_card*> monster_card_bag{&form_bat1 , &form_bat2 , &form_bat3 ,&sun1 ,&sun2 ,&sun3 , &thief1 ,&thief2 ,&thief3 ,&thief4 ,&thief5 ,&deliver ,&tell ,&former ,&assist ,&inocent ,&expert ,&ich};
+
 public:
+
 monster_card* draw_random_card(); // بعد از استفاده از این تابع متد نشون دادن کارت رو که در کلاس های کارت هیولا نوشتم فراخوانی کن
+
 bool moster_cards_is_end();
+
+std::vector<std::string> save_card_deck();
 
 
 
