@@ -181,7 +181,7 @@ bool moster_cards_is_end();
 std::vector<std::string> save_card_deck();
 
 
-
+void load_card_deck(std::vector<std::string> save_string);
 protected:
 };
 #endif

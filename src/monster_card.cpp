@@ -725,3 +725,86 @@ std::vector<std::string> bag_of_monster_card::save_card_deck(){
 
         return save_string;
 }
+//==================================================================================
+void bag_of_monster_card::load_card_deck(std::vector<std::string> save_string){
+monster_card_bag = {};
+int cnt_bat = 0;
+int cnt_sun = 0;
+int cnt_thief = 0;
+for(auto& temp : save_string){
+
+if (temp == "Form of the Bat" ){
+switch (cnt_bat){
+case 0:
+    monster_card_bag.push_back(&sun1);
+    cnt_bat++;
+    break;
+case 1:
+    monster_card_bag.push_back(&sun2);
+    cnt_bat++;
+    break;
+case 2:
+    monster_card_bag.push_back(&sun3);
+    cnt_bat++;
+    break;
+}
+}
+
+if (temp == "sunrise" ){
+switch (cnt_sun){
+case 0:
+    monster_card_bag.push_back(&form_bat1);
+    cnt_sun++;
+    break;
+case 1:
+    monster_card_bag.push_back(&form_bat2);
+    cnt_sun++;
+    break;
+case 2:
+    monster_card_bag.push_back(&form_bat3);
+    cnt_sun++;
+    break;
+}
+}
+
+if (temp == "thief" ){
+switch (cnt_thief){
+case 0:
+    monster_card_bag.push_back(&thief1);
+    cnt_thief++;
+    break;
+case 1:
+    monster_card_bag.push_back(&thief2);
+    cnt_thief++;
+    break;
+case 2:
+    monster_card_bag.push_back(&thief3);
+    cnt_thief++;
+    break;
+case 3:
+    monster_card_bag.push_back(&thief4);
+    cnt_thief++;
+    break;
+case 4:
+    monster_card_bag.push_back(&thief5);
+    cnt_thief++;
+    break;
+
+}
+}
+
+if (temp == "the_delivery" ){monster_card_bag.push_back(&deliver);}
+
+if (temp == "fortune_teller" ){monster_card_bag.push_back(&tell);}
+
+if (temp == "former_employer" ){monster_card_bag.push_back(&former);}
+
+if (temp == "hurried_assistant" ){monster_card_bag.push_back(&assist);}
+
+if (temp == "the_inocent" ){monster_card_bag.push_back(&inocent);}
+
+if (temp == "egyptian_expert" ){monster_card_bag.push_back(&expert);}
+
+if (temp == "the_Ichthyologist" ){monster_card_bag.push_back(&ich);}
+}
+}
